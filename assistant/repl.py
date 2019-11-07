@@ -23,8 +23,11 @@ class AssistantCmd(cmd.Cmd):
     def do_suggest(self, arg: str):
         """Finds best mobile phones matching given criteria."""
         suggested_models = self._phone_choice_assistant.suggest()
-        self._print("Suggested models:")
-        self._print("\n".join(f" - {model}" for model in suggested_models))
+        if suggested_models:
+            self._print("Suggested models:")
+            self._print("\n".join(f" - {model}" for model in suggested_models))
+        else:
+            self._print("No known model meets your requirements")
 
     def do_EOF(self, _arg: str):
         return True
