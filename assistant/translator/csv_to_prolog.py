@@ -10,8 +10,8 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
-from assistant.features import CpuFrequency
 from assistant.translator.features import BatteryCapacity
+from assistant.translator.features import CpuFrequency
 
 __all__ = ["translate_file"]
 
