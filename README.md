@@ -59,7 +59,7 @@ front_camera_matrix
 using the `translator` module from within a python virtualenv:
 
 ```bash
-python -m translator input.csv > prolog_assistant/knowledge_base.pl
+python -m assistant translate input.csv > prolog_assistant/knowledge_base.pl
 ```
 
 The values in input file should be:
