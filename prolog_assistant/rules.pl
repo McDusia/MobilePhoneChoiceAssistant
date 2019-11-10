@@ -7,3 +7,5 @@ has(battery_capacity, X) :- required(battery_capacity, RequiredLevel),
                             (X > Y).
 
 has(battery_capacity, _) :- not(required(battery_capacity, _)).
+
+has(_, _) :- true.
