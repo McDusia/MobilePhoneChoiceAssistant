@@ -4,7 +4,7 @@ from typing import List
 
 from pyswip import Prolog
 
-from assistant.phone_choice_assistant import BatteryLife
+from assistant.features import BatteryLife
 from assistant.phone_choice_assistant import Model
 from assistant.phone_choice_assistant import PhoneChoiceAssistant
 
@@ -14,11 +14,6 @@ Rule = str
 
 
 class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
-
-    BATTERY_LIFE_THRESHOLDS = {
-        BatteryLife.GOOD: 2950,
-        BatteryLife.IRRELEVANT: 0,
-    }
 
     def __init__(self,
                  rules_file: str,
@@ -55,5 +50,3 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
                              knowledge_base_file: str,
                              ):
         self._prolog.consult(knowledge_base_file)
-        for battery_life, threshold in self.BATTERY_LIFE_THRESHOLDS.items():
-            self._prolog.asserta(f"battery_threshold({battery_life.name.lower()}, {threshold})")
