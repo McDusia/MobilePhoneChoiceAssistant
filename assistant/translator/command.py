@@ -4,7 +4,7 @@ from typing import TextIO
 
 import click
 
-from translator.csv_to_prolog import translate_file
+from assistant.translator.csv_to_prolog import translate_file
 
 
 @click.command(name="translate")
@@ -21,7 +21,3 @@ def translate(
         reader = csv.DictReader(f)
         for lines in translate_file(reader):
             output_file.write(lines)
-
-
-if __name__ == '__main__':
-    translate()

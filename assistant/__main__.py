@@ -1,17 +1,15 @@
-from assistant.prolog.prolog_phone_choice_assistant import PrologPhoneChoiceAssistant
-from assistant.repl import AssistantCmd
+import click
+
+from assistant.command import cli
+from assistant.translator.command import translate
 
 
-def main(
-        rules_file: str,
-        knowledge_base_file: str,
+def add_subcommands(
+        _cli: click.Group,
 ):
-    assistant = PrologPhoneChoiceAssistant(rules_file, knowledge_base_file)
-    repl = AssistantCmd(assistant)
-    repl.cmdloop()
+    _cli.add_command(translate)
 
 
 if __name__ == '__main__':
-    rules_file = "prolog_assistant/rules.pl"
-    knowledge_base_file = "prolog_assistant/knowledge_base.pl"
-    main(rules_file, knowledge_base_file)
+    add_subcommands(cli)
+    cli()

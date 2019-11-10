@@ -1,14 +1,10 @@
 from abc import ABC
 from abc import abstractmethod
-from enum import Enum
 from typing import List
 
+from assistant.features import BatteryLife
+
 Model = str
-
-
-class BatteryLife(Enum):
-    GOOD = "good"
-    IRRELEVANT = "irrelevant"
 
 
 class PhoneChoiceAssistant(ABC):
