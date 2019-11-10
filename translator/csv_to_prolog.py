@@ -11,9 +11,6 @@ from typing import Tuple
 __all__ = ["translate_file"]
 
 
-PhoneSpecRow = Dict[str, str]
-
-
 def translate_file(
         reader: csv.DictReader,
 ) -> Generator[str, None, None]:
@@ -23,26 +20,28 @@ def translate_file(
 """
     yield output_chunk
 
+    translator = RulesTranslator()
+
     for row in reader:
-        yield row_to_rule(row)
+        yield translator.row_to_rule(row)
 
 
-RULE_TEMPLATE = string.Template("""\
-model("$model") :- $facts.
-""")
+def prolog_bool(x: str) -> str:
+    return str(bool(int(x))).lower()
 
-
-FACT_TEMPLATE_HAS = string.Template("has($key, $value)")
 
 Mapping = Callable[[str], Any]
 DictKey = str
 FactKey = str
+PhoneSpecRow = Dict[str, str]
 
 
-def row_to_rule(
-        row: PhoneSpecRow,
-):
-    has_facts: List[Tuple[DictKey, FactKey, Mapping]] = [
+class RulesTranslator:
+    _RULE_TEMPLATE = string.Template("""\
+model("$model") :- $facts.
+""")
+
+    _HAS_FACTS: List[Tuple[DictKey, FactKey, Mapping]] = [
         ("battery_capacity", "battery_capacity", int),
         ("memory", "memory", int),
         ("display_diagonal", "display_diagonal", float),
@@ -69,22 +68,27 @@ def row_to_rule(
         ("front_camera_matrix", "front_camera_matrix", float),
     ]
 
-    def facts() -> Generator[str, None, None]:
-        for dict_key, fact_key, mapping in has_facts:
+    _FACT_TEMPLATE_HAS = string.Template("has($key, $value)")
+
+    @staticmethod
+    def row_to_rule(
+            row: PhoneSpecRow,
+    ) -> str:
+        facts = RulesTranslator._facts(row)
+        facts_str = ",".join(f"\n\t{fact}"
+                             for fact in facts)
+        return RulesTranslator._RULE_TEMPLATE.substitute(
+            model=row["model"],
+            facts=facts_str,
+        )
+
+    @staticmethod
+    def _facts(row: PhoneSpecRow) -> Generator[str, None, None]:
+        for dict_key, fact_key, mapping in RulesTranslator._HAS_FACTS:
             values = parse_value(row[dict_key])
-            yield from (FACT_TEMPLATE_HAS.substitute(key=fact_key,
-                                                     value=mapping(value))
+            yield from (RulesTranslator._FACT_TEMPLATE_HAS.substitute(key=fact_key,
+                                                                      value=mapping(value))
                         for value in values)
-
-    facts_str = ",".join(f"\n\t{fact}" for fact in facts())
-    return RULE_TEMPLATE.substitute(
-        model=row["model"],
-        facts=facts_str,
-    )
-
-
-def prolog_bool(x: str) -> str:
-    return str(bool(int(x))).lower()
 
 
 def parse_value(
