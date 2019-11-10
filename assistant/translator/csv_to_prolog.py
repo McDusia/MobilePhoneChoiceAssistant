@@ -10,7 +10,8 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
-from assistant.features import BatteryLife
+from assistant.features import CpuFrequency
+from assistant.translator.features import BatteryCapacity
 
 __all__ = ["translate_file"]
 
@@ -44,36 +45,62 @@ PhoneSpecRow = Dict[str, str]
 
 
 class AggregatedRulesGenerator:
-    _RULE_TEMPLATE = string.Template("$name($key, $value).\n")
+    _RULE_TEMPLATE = string.Template("$threshold($name, $key, $value).\n")
+    _UP_THRESHOLD_TEMPLATE = string.Template(_RULE_TEMPLATE.safe_substitute(threshold="up_threshold"))
+    _DOWN_THRESHOLD_TEMPLATE = string.Template(_RULE_TEMPLATE.safe_substitute(threshold="down_threshold"))
 
     def __init__(self) -> None:
         self._battery_capacities: List[int] = list()
+        self._cpu_frequencies: List[int] = list()
 
     def aggregate(
             self,
             row: PhoneSpecRow,
     ):
         self._try_add(row["battery_capacity"], int, self._battery_capacities)
+        self._try_add(row["cpu_frequency"], int, self._cpu_frequencies)
 
     @property
     def aggregated_rules(self) -> Generator[str, None, None]:
-        for battery_life, threshold in self._battery_lifes.items():
-            yield self._RULE_TEMPLATE.substitute(
-                name="battery_threshold",
-                key=battery_life.value,
+        for battery_capacity, threshold in self._battery_thresholds.items():
+            yield self._UP_THRESHOLD_TEMPLATE.substitute(
+                name="battery_capacity",
+                key=battery_capacity.value,
                 value=threshold,
             )
+        cpu_thresholds = self._cpu_frequency_thresholds
+        yield self._UP_THRESHOLD_TEMPLATE.substitute(
+            name="cpu_frequency",
+            key=CpuFrequency.HIGH.value,
+            value=cpu_thresholds[CpuFrequency.HIGH],
+        )
+        yield self._DOWN_THRESHOLD_TEMPLATE.substitute(
+            name="cpu_frequency",
+            key=CpuFrequency.LOW.value,
+            value=cpu_thresholds[CpuFrequency.LOW],
+        )
 
     @property
-    def _battery_lifes(
+    def _battery_thresholds(
             self,
-    ) -> Dict[BatteryLife, int]:
+    ) -> Dict[BatteryCapacity, int]:
         mean_bc = stats.mean(self._battery_capacities)
         stdev_bc = stats.stdev(self._battery_capacities)
         return {
-            BatteryLife.EXCELLENT: mean_bc + 2 * stdev_bc,
-            BatteryLife.GOOD: mean_bc + stdev_bc,
-            BatteryLife.IRRELEVANT: 0,
+            BatteryCapacity.LARGE: mean_bc + 2 * stdev_bc,
+            BatteryCapacity.BIG: mean_bc + stdev_bc,
+            BatteryCapacity.OK: mean_bc,
+        }
+
+    @property
+    def _cpu_frequency_thresholds(
+            self,
+    ) -> Dict[CpuFrequency, int]:
+        mean_freq = stats.mean(self._cpu_frequencies)
+        stdev_freq = stats.stdev(self._cpu_frequencies)
+        return {
+            CpuFrequency.LOW: mean_freq,
+            CpuFrequency.HIGH: mean_freq + stdev_freq
         }
 
     @staticmethod

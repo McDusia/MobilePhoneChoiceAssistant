@@ -42,7 +42,7 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         if previous_rule:
             self._prolog.retract(previous_rule)
 
-        new_rule = f"required(battery_capacity, {battery_life.name.lower()})"
+        new_rule = f"required(battery_life, {battery_life.name.lower()})"
         self._prolog.asserta(new_rule)
         self._loaded_rules[rule_key] = new_rule
 
