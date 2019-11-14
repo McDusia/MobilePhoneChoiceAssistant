@@ -16,7 +16,7 @@ Rule = str
 
 
 class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
-    _REQUIRE_TEMPLATE = "required({rule_key}, {value})"
+    _REQUIRE_TEMPLATE = "user_requirement({rule_key}, {value})"
 
     def __init__(self,
                  rules_file: str,
