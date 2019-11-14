@@ -140,6 +140,7 @@ class RulesTranslator:
         ("sim_types", "sim_type", str),
         ("back_camera_matrix", "back_camera_matrix", float),
         ("front_camera_matrix", "front_camera_matrix", float),
+        ("price", "price", float),
     ]
 
     _FACT_TEMPLATE_HAS = 'has("{model}", {key}, {value})'
