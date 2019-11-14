@@ -16,7 +16,7 @@ Rule = str
 
 
 class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
-    _REQUIRE_TEMPLATE = string.Template("required($rule_key, $value)")
+    _REQUIRE_TEMPLATE = "required({rule_key}, {value})"
 
     def __init__(self,
                  rules_file: str,
@@ -52,7 +52,7 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         if previous_rule:
             self._prolog.retract(previous_rule)
 
-        new_rule = PrologPhoneChoiceAssistant._REQUIRE_TEMPLATE.substitute(
+        new_rule = PrologPhoneChoiceAssistant._REQUIRE_TEMPLATE.format(
             rule_key=rule_key,
             value=value,
         )

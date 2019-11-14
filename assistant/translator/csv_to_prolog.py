@@ -1,7 +1,7 @@
 import ast
 import csv
-import string
 import statistics as stats
+import string
 from typing import Any
 from typing import Callable
 from typing import Dict
@@ -39,9 +39,9 @@ PhoneSpecRow = Dict[str, str]
 
 
 class AggregatedRulesGenerator:
-    _RULE_TEMPLATE = string.Template("$threshold($name, $key, $value).\n")
-    _UP_THRESHOLD_TEMPLATE = string.Template(_RULE_TEMPLATE.safe_substitute(threshold="up_threshold"))
-    _DOWN_THRESHOLD_TEMPLATE = string.Template(_RULE_TEMPLATE.safe_substitute(threshold="down_threshold"))
+    _RULE_TEMPLATE = string.Template("$threshold({name}, {key}, {value}).\n")
+    _UP_THRESHOLD_TEMPLATE = _RULE_TEMPLATE.substitute(threshold="up_threshold")
+    _DOWN_THRESHOLD_TEMPLATE = _RULE_TEMPLATE.substitute(threshold="down_threshold")
 
     def __init__(self) -> None:
         self._battery_capacities: List[int] = list()
@@ -57,18 +57,18 @@ class AggregatedRulesGenerator:
     @property
     def aggregated_rules(self) -> Generator[str, None, None]:
         for battery_capacity, threshold in self._battery_thresholds.items():
-            yield self._UP_THRESHOLD_TEMPLATE.substitute(
+            yield self._UP_THRESHOLD_TEMPLATE.format(
                 name="battery_capacity",
                 key=battery_capacity.value,
                 value=threshold,
             )
         cpu_thresholds = self._cpu_frequency_thresholds
-        yield self._UP_THRESHOLD_TEMPLATE.substitute(
+        yield self._UP_THRESHOLD_TEMPLATE.format(
             name="cpu_frequency",
             key=CpuFrequency.HIGH.value,
             value=cpu_thresholds[CpuFrequency.HIGH],
         )
-        yield self._DOWN_THRESHOLD_TEMPLATE.substitute(
+        yield self._DOWN_THRESHOLD_TEMPLATE.format(
             name="cpu_frequency",
             key=CpuFrequency.LOW.value,
             value=cpu_thresholds[CpuFrequency.LOW],
@@ -111,9 +111,9 @@ class AggregatedRulesGenerator:
 
 
 class RulesTranslator:
-    _RULE_TEMPLATE = string.Template("""\
-$facts.
-""")
+    _RULE_TEMPLATE = """\
+{facts}.
+"""
 
     _HAS_FACTS: List[Tuple[DictKey, FactKey, Mapping]] = [
         ("battery_capacity", "battery_capacity", int),
@@ -142,7 +142,7 @@ $facts.
         ("front_camera_matrix", "front_camera_matrix", float),
     ]
 
-    _FACT_TEMPLATE_HAS = string.Template('has("$model", $key, $value)')
+    _FACT_TEMPLATE_HAS = 'has("{model}", {key}, {value})'
 
     def __init__(
             self,
@@ -156,11 +156,11 @@ $facts.
     ) -> str:
         facts = RulesTranslator._facts(row)
         facts_str = ",\n".join(f"{fact}"
-                             for fact in facts)
+                               for fact in facts)
 
         self._aggregated_rules_generator.aggregate(row)
 
-        return RulesTranslator._RULE_TEMPLATE.substitute(
+        return RulesTranslator._RULE_TEMPLATE.format(
             model=row["model"],
             facts=facts_str,
         )
@@ -170,9 +170,9 @@ $facts.
         model = row["model"]
         for dict_key, fact_key, mapping in RulesTranslator._HAS_FACTS:
             values = parse_value(row[dict_key])
-            yield from (RulesTranslator._FACT_TEMPLATE_HAS.substitute(model=model,
-                                                                      key=fact_key,
-                                                                      value=mapping(value))
+            yield from (RulesTranslator._FACT_TEMPLATE_HAS.format(model=model,
+                                                                  key=fact_key,
+                                                                  value=mapping(value))
                         for value in values)
 
 
