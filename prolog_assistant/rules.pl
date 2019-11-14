@@ -1,38 +1,32 @@
 :- dynamic
-    battery_threshold/1,
-    required/2.
+    has/3,
+    user_requirement/2.
 
-/*
- * whether Value for Key fits under any threshold for Key
- * e.g.:
- *   phone has(battery_capacity, 3900)
- *
- *   required(battery_capacity, not_too_big)
- *   up_threshold(battery_capacity, large, 5000)
- *   up_threshold(battery_capacity, big, 4000)
- *   down_threshold(battery_capacity, not_too_big, 4000)
- *   down_threshold(battery_capacity, small, 2000)
- *   down_threshold(battery_capacity, tiny, 1000)
- * then
- *   max(battery_capacity, not_too_big)
- *   max(battery_capacity, small)
- *   max(battery_capacity, tiny)
- * will be true
- */
-max(K, V) :- required(K, RequiredLevel),
-             down_threshold(K, RequiredLevel, X),
-             (V < X).
-min(K, V) :- required(K, RequiredLevel),
-             up_threshold(K, RequiredLevel, X),
-             (V > X).
+max(Model, Feature) :-
+    required(Feature, RequiredLevel),
+    down_threshold(Feature, RequiredLevel, X),
+    has(Model, Feature, V),
+    (V < X).
+min(Model, Feature) :-
+    required(Feature, RequiredLevel),
+    up_threshold(Feature, RequiredLevel, X),
+    has(Model, Feature, V),
+    (V > X).
 
-% http://www.learnprolognow.org/lpnpage.php?pagetype=html&pageid=lpn-htmlse45
-has(K, V) :- min(K, V).
-has(K, V) :- max(K, V).
-has(K, _) :- required(K, _), !, fail.
-has(_, _) :- true.
+meets_feature_requirements(Model, Feature) :- min(Model, Feature).
+meets_feature_requirements(Model, Feature) :- max(Model, Feature).
+meets_feature_requirements(Model, Feature) :-
+    has(Model, _, _),
+    required(Feature, _), !, fail.
+meets_feature_requirements(Model, _) :- has(Model, _, _).
 
-required(battery_capacity, ok) :- required(battery_life, good).
+required(battery_capacity, ok) :- user_requirement(battery_life, good).
 
-required(battery_capacity, large) :- required(battery_life, excellent).
-required(cpu_frequency, low) :- required(battery_life, excellent).
+required(battery_capacity, large) :- user_requirement(battery_life, excellent).
+required(cpu_frequency, low) :- user_requirement(battery_life, excellent).
+
+
+% TODO: this returns the same model multiple times
+model(Model) :-
+    meets_feature_requirements(Model, battery_capacity),
+    meets_feature_requirements(Model, cpu_frequency).
