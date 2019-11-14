@@ -19,12 +19,6 @@ __all__ = ["translate_file"]
 def translate_file(
         reader: csv.DictReader,
 ) -> Generator[str, None, None]:
-    output_chunk = """\
-:- dynamic
-    has/2.
-"""
-    yield output_chunk
-
     aggregated_rules_generator = AggregatedRulesGenerator()
     translator = RulesTranslator(aggregated_rules_generator)
 
@@ -118,7 +112,7 @@ class AggregatedRulesGenerator:
 
 class RulesTranslator:
     _RULE_TEMPLATE = string.Template("""\
-model("$model") :- $facts.
+$facts.
 """)
 
     _HAS_FACTS: List[Tuple[DictKey, FactKey, Mapping]] = [
@@ -148,7 +142,7 @@ model("$model") :- $facts.
         ("front_camera_matrix", "front_camera_matrix", float),
     ]
 
-    _FACT_TEMPLATE_HAS = string.Template("has($key, $value)")
+    _FACT_TEMPLATE_HAS = string.Template('has("$model", $key, $value)')
 
     def __init__(
             self,
@@ -161,7 +155,7 @@ model("$model") :- $facts.
             row: PhoneSpecRow,
     ) -> str:
         facts = RulesTranslator._facts(row)
-        facts_str = ",".join(f"\n\t{fact}"
+        facts_str = ",\n".join(f"{fact}"
                              for fact in facts)
 
         self._aggregated_rules_generator.aggregate(row)
@@ -173,9 +167,11 @@ model("$model") :- $facts.
 
     @staticmethod
     def _facts(row: PhoneSpecRow) -> Generator[str, None, None]:
+        model = row["model"]
         for dict_key, fact_key, mapping in RulesTranslator._HAS_FACTS:
             values = parse_value(row[dict_key])
-            yield from (RulesTranslator._FACT_TEMPLATE_HAS.substitute(key=fact_key,
+            yield from (RulesTranslator._FACT_TEMPLATE_HAS.substitute(model=model,
+                                                                      key=fact_key,
                                                                       value=mapping(value))
                         for value in values)
 
