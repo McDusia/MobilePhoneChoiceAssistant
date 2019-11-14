@@ -54,6 +54,7 @@ usb_c
 sim_types
 back_camera_matrix
 front_camera_matrix
+price
 ```
 
 using the `translator` module from within a python virtualenv:
