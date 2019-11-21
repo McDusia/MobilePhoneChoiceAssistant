@@ -1,7 +1,7 @@
 import cmd
 from typing import TextIO, List
 
-from assistant.phone_choice_assistant import BatteryLife
+from assistant.phone_choice_assistant import BatteryLife, CPUFrequency
 from assistant.phone_choice_assistant import PhoneChoiceAssistant
 
 
@@ -35,6 +35,7 @@ class AssistantCmd(cmd.Cmd):
     def do_battery_life(self, arg: str):
         """Sets requirement for battery life.
 Either good or irrelevant."""
+
         try:
             battery_life = self._command_parser.parse_battery_life(arg)
             self._phone_choice_assistant.battery_life(battery_life)
@@ -48,6 +49,22 @@ Either good or irrelevant."""
                 for name in names
                 if name.startswith(prefix.lower())]
 
+    def do_cpu_frequency(self, arg: str):
+        """Sets requirement for CPU frequency.
+        Either high or low"""
+        try:
+            cpu_frequency = self._command_parser.parse_cpu_frequency(arg)
+            self._phone_choice_assistant.cpu_frequency(cpu_frequency)
+        except ValueError:
+            self._print("CPU frequency can be high or low")
+
+    @staticmethod
+    def complete_cpu_frequency(prefix: str, *_args) -> List[str]:
+        names = (v.name.lower() for v in CPUFrequency)
+        return [name
+                for name in names
+                if name.startswith(prefix.lower())]
+
     def _print(self, *args, **kwargs):
         kwargs["file"] = self.stdout
         print(*args, **kwargs)
@@ -57,3 +74,7 @@ class CommandParser:
     @staticmethod
     def parse_battery_life(input_str: str) -> BatteryLife:
         return BatteryLife(input_str.lower())
+
+    @staticmethod
+    def parse_cpu_frequency(input_str: str) -> CPUFrequency:
+        return CPUFrequency(input_str.lower())
