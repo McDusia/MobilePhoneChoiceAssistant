@@ -110,12 +110,17 @@ class AggregatedRulesGenerator:
                 pass
 
 
+def brand_from_model(model: str) -> str:
+    return f'"{model.split(maxsplit=1)[0]}"'
+
+
 class RulesTranslator:
     _RULE_TEMPLATE = """\
 {facts}.
 """
 
     _HAS_FACTS: List[Tuple[DictKey, FactKey, Mapping]] = [
+        ("model", "brand", brand_from_model),
         ("battery_capacity", "battery_capacity", int),
         ("memory", "memory", int),
         ("display_diagonal", "display_diagonal", float),
