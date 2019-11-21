@@ -29,5 +29,5 @@ required(cpu_frequency, high) :- user_requirement(cpu_frequency, high).
 
 % TODO: this returns the same model multiple times
 model(Model) :-
-    meets_feature_requirements(Model, cpu_frequency).
-%    meets_feature_requirements(Model, battery_capacity).
+    meets_feature_requirements(Model, cpu_frequency),
+    meets_feature_requirements(Model, battery_capacity).
