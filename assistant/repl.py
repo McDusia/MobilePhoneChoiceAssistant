@@ -35,7 +35,6 @@ class AssistantCmd(cmd.Cmd):
     def do_battery_life(self, arg: str):
         """Sets requirement for battery life.
 Either good or irrelevant."""
-
         try:
             battery_life = self._command_parser.parse_battery_life(arg)
             self._phone_choice_assistant.battery_life(battery_life)
@@ -53,8 +52,8 @@ Either good or irrelevant."""
         """Sets requirement for CPU frequency.
         Either high or low"""
         try:
-            cpu_frequency = self._command_parser.parse_cpu_frequency(arg)
-            self._phone_choice_assistant.cpu_frequency(cpu_frequency)
+            cpu_frequency = self._command_parser.parse_cpu_frequency(arg) # bierze jaka jest wartość
+            self._phone_choice_assistant.cpu_frequency(cpu_frequency) # ustawia to jako pole
         except ValueError:
             self._print("CPU frequency can be high or low")
 
