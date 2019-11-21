@@ -30,4 +30,4 @@ class DummyPhoneChoiceAssistant(PhoneChoiceAssistant):
         return battery_life.GOOD
 
     def cpu_frequency(self, cpu_frequency: CPUFrequency):
-        return cpu_frequency.HIGH
+        return cpu_frequency.LOW

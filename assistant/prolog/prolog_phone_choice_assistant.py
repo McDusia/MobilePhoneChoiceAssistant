@@ -42,8 +42,8 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         self._require(rule_key, battery_life.name.lower())
 
     def cpu_frequency(self, cpu_frequency: CPUFrequency):
-        rule_key = "battery_life"
-        self._require(rule_key, cpu_frequency.name.lower())
+        rule_key = "cpu_frequency"
+        self._require(rule_key, cpu_frequency.name.lower()) #ile użytkownik chce capacity
 
     def _load_knowledge_base(self,
                              knowledge_base_file: str,
