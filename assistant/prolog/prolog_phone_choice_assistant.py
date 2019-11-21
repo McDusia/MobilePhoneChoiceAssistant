@@ -1,4 +1,3 @@
-import string
 from typing import Any
 from typing import Dict
 from typing import Generator
@@ -6,7 +5,7 @@ from typing import List
 
 from pyswip import Prolog
 
-from assistant.features import BatteryLife
+from assistant.features import BatteryLife, CPUFrequency
 from assistant.phone_choice_assistant import Model
 from assistant.phone_choice_assistant import PhoneChoiceAssistant
 
@@ -41,6 +40,10 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
     def battery_life(self, battery_life: BatteryLife):
         rule_key = "battery_life"
         self._require(rule_key, battery_life.name.lower())
+
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
+        rule_key = "battery_life"
+        self._require(rule_key, cpu_frequency.name.lower())
 
     def _load_knowledge_base(self,
                              knowledge_base_file: str,
