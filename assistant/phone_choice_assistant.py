@@ -2,7 +2,7 @@ from abc import ABC
 from abc import abstractmethod
 from typing import List
 
-from assistant.features import BatteryLife
+from assistant.features import BatteryLife, CPUFrequency
 
 Model = str
 
@@ -16,6 +16,10 @@ class PhoneChoiceAssistant(ABC):
     def battery_life(self, battery_life: BatteryLife):
         ...
 
+    @abstractmethod
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
+        ...
+
 
 class DummyPhoneChoiceAssistant(PhoneChoiceAssistant):
 
@@ -24,3 +28,6 @@ class DummyPhoneChoiceAssistant(PhoneChoiceAssistant):
 
     def battery_life(self, battery_life: BatteryLife):
         return battery_life.GOOD
+
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
+        return cpu_frequency.LOW

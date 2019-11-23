@@ -10,8 +10,7 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
-from assistant.translator.features import BatteryCapacity
-from assistant.translator.features import CpuFrequency
+from assistant.translator.features import BatteryCapacity, CPUFrequency
 
 __all__ = ["translate_file"]
 
@@ -65,13 +64,13 @@ class AggregatedRulesGenerator:
         cpu_thresholds = self._cpu_frequency_thresholds
         yield self._UP_THRESHOLD_TEMPLATE.format(
             name="cpu_frequency",
-            key=CpuFrequency.HIGH.value,
-            value=cpu_thresholds[CpuFrequency.HIGH],
+            key=CPUFrequency.HIGH.value,
+            value=cpu_thresholds[CPUFrequency.HIGH],
         )
         yield self._DOWN_THRESHOLD_TEMPLATE.format(
             name="cpu_frequency",
-            key=CpuFrequency.LOW.value,
-            value=cpu_thresholds[CpuFrequency.LOW],
+            key=CPUFrequency.LOW.value,
+            value=cpu_thresholds[CPUFrequency.LOW],
         )
 
     @property
@@ -89,12 +88,12 @@ class AggregatedRulesGenerator:
     @property
     def _cpu_frequency_thresholds(
             self,
-    ) -> Dict[CpuFrequency, int]:
+    ) -> Dict[CPUFrequency, int]:
         mean_freq = stats.mean(self._cpu_frequencies)
         stdev_freq = stats.stdev(self._cpu_frequencies)
         return {
-            CpuFrequency.LOW: mean_freq,
-            CpuFrequency.HIGH: mean_freq + stdev_freq
+            CPUFrequency.LOW: mean_freq,
+            CPUFrequency.HIGH: mean_freq + stdev_freq
         }
 
     @staticmethod

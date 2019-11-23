@@ -7,6 +7,6 @@ class BatteryCapacity(Enum):
     OK = "ok"
 
 
-class CpuFrequency(Enum):
+class CPUFrequency(Enum):
     LOW = "low"
     HIGH = "high"
