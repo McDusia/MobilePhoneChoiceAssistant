@@ -2,8 +2,7 @@ from abc import ABC
 from abc import abstractmethod
 from typing import Set
 
-from assistant.features import UserRequirementBatteryLife, UserRequirementCPUFrequency
-
+from assistant.features import BatteryLife, CPUFrequency, TouchScreen, DualSim, WaterResistance, NFC
 Model = str
 
 
@@ -13,13 +12,28 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
-    def battery_life(self, battery_life: UserRequirementBatteryLife):
+    def battery_life(self, battery_life: BatteryLife):
         ...
 
     @abstractmethod
-    def cpu_frequency(self, cpu_frequency: UserRequirementCPUFrequency):
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
         ...
 
+    @abstractmethod
+    def touch_screen(self, touch_screen: TouchScreen):
+        ...
+
+    @abstractmethod
+    def nfc(self, nfc: NFC):
+        ...
+
+    @abstractmethod
+    def water_resistant(self, water_resistant: WaterResistance):
+        ...
+
+    @abstractmethod
+    def dual_sim(self, dual_sim: DualSim):
+        ...
 
 #class DummyPhoneChoiceAssistant(PhoneChoiceAssistant):
 #
