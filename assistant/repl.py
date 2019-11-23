@@ -1,8 +1,8 @@
 import cmd
 from typing import TextIO, List
 
-from assistant.phone_choice_assistant import BatteryLife, CPUFrequency
-from assistant.phone_choice_assistant import PhoneChoiceAssistant
+from assistant.phone_choice_assistant_interface import UserRequirementBatteryLife, UserRequirementCPUFrequency
+from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
 
 class AssistantCmd(cmd.Cmd):
@@ -39,11 +39,11 @@ Either good or irrelevant."""
             battery_life = self._command_parser.parse_battery_life(arg)
             self._phone_choice_assistant.battery_life(battery_life)
         except ValueError:
-            self._print("ERROR! Battery life can be either good or irrelevant")
+            self._print("ERROR! Battery life can be either good or irrelevant or excellent")
 
     @staticmethod
     def complete_battery_life(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in BatteryLife)
+        names = (v.name.lower() for v in UserRequirementBatteryLife)
         return [name
                 for name in names
                 if name.startswith(prefix.lower())]
@@ -59,7 +59,7 @@ Either good or irrelevant."""
 
     @staticmethod
     def complete_cpu_frequency(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in CPUFrequency)
+        names = (v.name.lower() for v in UserRequirementCPUFrequency)
         return [name
                 for name in names
                 if name.startswith(prefix.lower())]
@@ -71,9 +71,9 @@ Either good or irrelevant."""
 
 class CommandParser:
     @staticmethod
-    def parse_battery_life(input_str: str) -> BatteryLife:
-        return BatteryLife(input_str.lower())
+    def parse_battery_life(input_str: str) -> UserRequirementBatteryLife:
+        return UserRequirementBatteryLife(input_str.lower())
 
     @staticmethod
-    def parse_cpu_frequency(input_str: str) -> CPUFrequency:
-        return CPUFrequency(input_str.lower())
+    def parse_cpu_frequency(input_str: str) -> UserRequirementCPUFrequency:
+        return UserRequirementCPUFrequency(input_str.lower())

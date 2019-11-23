@@ -1,12 +1,12 @@
 from enum import Enum
 
 
-class BatteryLife(Enum):
+class UserRequirementBatteryLife(Enum):
     EXCELLENT = "excellent"
     GOOD = "good"
     IRRELEVANT = "irrelevant"
 
 
-class CPUFrequency(Enum):
+class UserRequirementCPUFrequency(Enum):
     HIGH = "high"
     LOW = "low"
