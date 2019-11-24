@@ -104,6 +104,7 @@ class BackCameraMatrix(Enum):
 
 
 class FrontCameraMatrix(Enum):
+    EXCELLENT = "excellent"
     GOOD = "good"
     IRRELEVANT = "irrelevant"
 
@@ -113,3 +114,9 @@ class Price(Enum):
     MEDIUM = "medium"
     CHEAP = "cheap"
     VERY_CHEAP = "very_cheap"
+
+
+class CpuNCores(Enum):
+    MANY = "many"
+    MEDIUM_AMOUNT = "medium_amount"
+    IRRELEVANT = "irrelevant"

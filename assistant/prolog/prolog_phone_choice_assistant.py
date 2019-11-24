@@ -3,7 +3,8 @@ from typing import Dict
 from typing import Generator
 from typing import Set
 from pyswip import Prolog
-from assistant.features import BatteryLife, CPUFrequency, DualSim, WaterResistance, NFC, TouchScreen
+from assistant.features import BatteryLife, CPUFrequency, DualSim, WaterResistance, NFC, TouchScreen, FrontCameraMatrix, \
+    BackCameraMatrix, CpuNCores
 from assistant.phone_choice_assistant_interface import Model
 from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
@@ -62,6 +63,18 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
     def dual_sim(self, dual_sim: DualSim):
         rule_key = "dual_sim"
         self._require(rule_key, dual_sim.name.lower())
+
+    def cpu_n_cores(self, cpu_n_cores: CpuNCores):
+        rule_key = "cpu_n_cores"
+        self._require(rule_key, cpu_n_cores.name.lower())
+
+    def back_camera_matrix(self, back_camera_matrix: BackCameraMatrix):
+        rule_key = "back_camera_matrix"
+        self._require(rule_key, back_camera_matrix.name.lower())
+
+    def front_camera_matrix(self, front_camera_matrix: FrontCameraMatrix):
+        rule_key = "front_camera_matrix"
+        self._require(rule_key, front_camera_matrix.name.lower())
 
     def _require(self, rule_key: str, value: Any):
         previous_rule = self._loaded_rules.get(rule_key)

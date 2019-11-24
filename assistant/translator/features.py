@@ -104,6 +104,7 @@ class BackCameraMatrix(Enum):
 
 
 class FrontCameraMatrix(Enum):
+    EXCELLENT = "excellent"
     GOOD = "good"
     IRRELEVANT = "irrelevant"
 
