@@ -1,7 +1,11 @@
 import cmd
 from typing import TextIO, List
 
+
 from assistant.phone_choice_assistant_interface import UserRequirementBatteryLife, UserRequirementCPUFrequency
+=======
+from assistant.phone_choice_assistant_interface import BatteryLife, CPUFrequency, \
+    CpuNCores, FrontCameraMatrix, BackCameraMatrix
 from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
 
@@ -32,6 +36,8 @@ class AssistantCmd(cmd.Cmd):
     def do_EOF(self, _arg: str):
         return True
 
+# TODO: all these methods looks the same...
+
     def do_battery_life(self, arg: str):
         """Sets requirement for battery life.
 Either good or irrelevant."""
@@ -43,7 +49,7 @@ Either good or irrelevant."""
 
     @staticmethod
     def complete_battery_life(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in UserRequirementBatteryLife)
+        names = (v.name.lower() for v in BatteryLife)
         return [name
                 for name in names
                 if name.startswith(prefix.lower())]
@@ -59,10 +65,58 @@ Either good or irrelevant."""
 
     @staticmethod
     def complete_cpu_frequency(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in UserRequirementCPUFrequency)
+        names = (v.name.lower() for v in CPUFrequency)
         return [name
                 for name in names
                 if name.startswith(prefix.lower())]
+
+    def do_cpu_n_cores(self, arg: str):
+            """Sets requirement for cpu_n_cores
+            Either many, medium_amount or irrelevant."""
+            try:
+                cpu_n_cores = self._command_parser.parse_cpu_n_cores(arg)
+                self._phone_choice_assistant.cpu_n_cores(cpu_n_cores)
+            except ValueError:
+                self._print("ERROR! Number of cpu can be either many or medium_amount or irrelevant")
+
+    @staticmethod
+    def complete_cpu_n_cores(prefix: str, *_args) -> List[str]:
+            names = (v.name.lower() for v in CpuNCores)
+            return [name
+                    for name in names
+                    if name.startswith(prefix.lower())]
+
+    def do_back_camera_matrix(self, arg: str):
+            """Sets requirement for back camera matrix
+            Either excellent, good or irrelevant."""
+            try:
+                back_camera_matrix = self._command_parser.parse_back_camera_matrix(arg)
+                self._phone_choice_assistant.back_camera_matrix(back_camera_matrix)
+            except ValueError:
+                self._print("ERROR! Back camera matrix can be either excellent, good or irrelevant")
+
+    @staticmethod
+    def complete_back_camera_matrix(prefix: str, *_args) -> List[str]:
+            names = (v.name.lower() for v in BackCameraMatrix)
+            return [name
+                    for name in names
+                    if name.startswith(prefix.lower())]
+
+    def do_front_camera_matrix(self, arg: str):
+            """Sets requirement for front camera matrix
+            Either excellent, good or irrelevant."""
+            try:
+                front_camera_matrix = self._command_parser.parse_front_camera_matrix(arg)
+                self._phone_choice_assistant.cpu_n_cores(front_camera_matrix)
+            except ValueError:
+                self._print("ERROR! Front camera matrix can be either excellent, good or irrelevant")
+
+    @staticmethod
+    def complete_front_camera_matrix(prefix: str, *_args) -> List[str]:
+            names = (v.name.lower() for v in FrontCameraMatrix)
+            return [name
+                    for name in names
+                    if name.startswith(prefix.lower())]
 
     def _print(self, *args, **kwargs):
         kwargs["file"] = self.stdout
@@ -75,5 +129,22 @@ class CommandParser:
         return UserRequirementBatteryLife(input_str.lower())
 
     @staticmethod
+<<<<<<< HEAD
     def parse_cpu_frequency(input_str: str) -> UserRequirementCPUFrequency:
         return UserRequirementCPUFrequency(input_str.lower())
+=======
+    def parse_touch_screen(input_str: str) -> TouchScreen:
+        return TouchScreen(input_str.lower())
+
+    @staticmethod
+    def parse_cpu_n_cores(input_str: str) -> CpuNCores:
+        return CpuNCores(input_str.lower())
+
+    @staticmethod
+    def parse_back_camera_matrix(input_str: str) -> BackCameraMatrix:
+        return BackCameraMatrix(input_str.lower())
+
+    @staticmethod
+    def parse_front_camera_matrix(input_str: str) -> FrontCameraMatrix:
+        return FrontCameraMatrix(input_str.lower())
+>>>>>>> bde6ab6... new features added

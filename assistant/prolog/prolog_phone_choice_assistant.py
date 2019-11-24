@@ -3,7 +3,11 @@ from typing import Dict
 from typing import Generator
 from typing import Set
 from pyswip import Prolog
-from assistant.features import UserRequirementBatteryLife, UserRequirementCPUFrequency
+
+from assistant.features import BatteryLife, CPUFrequency
+
+from assistant.features import BatteryLife, CPUFrequency, FrontCameraMatrix, \
+    BackCameraMatrix, CpuNCores
 from assistant.phone_choice_assistant_interface import Model
 from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
@@ -38,13 +42,25 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         models_list = [d["Model"].decode("utf-8") for d in models]
         return set(models_list)
 
-    def battery_life(self, battery_life: UserRequirementBatteryLife):
+    def battery_life(self, battery_life: BatteryLife):
         rule_key = "battery_life"
         self._require(rule_key, battery_life.name.lower())
 
-    def cpu_frequency(self, cpu_frequency: UserRequirementCPUFrequency):
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
         rule_key = "cpu_frequency"
         self._require(rule_key, cpu_frequency.name.lower()) # ile użytkownik chce capacity
+
+    def cpu_n_cores(self, cpu_n_cores: CpuNCores):
+        rule_key = "cpu_n_cores"
+        self._require(rule_key, cpu_n_cores.name.lower())
+
+    def back_camera_matrix(self, back_camera_matrix: BackCameraMatrix):
+        rule_key = "back_camera_matrix"
+        self._require(rule_key, back_camera_matrix.name.lower())
+
+    def front_camera_matrix(self, front_camera_matrix: FrontCameraMatrix):
+        rule_key = "front_camera_matrix"
+        self._require(rule_key, front_camera_matrix.name.lower())
 
     def _require(self, rule_key: str, value: Any):
         previous_rule = self._loaded_rules.get(rule_key)
