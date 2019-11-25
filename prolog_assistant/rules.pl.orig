@@ -16,16 +16,9 @@ min(Model, Feature) :-
 meets_feature_requirements(Model, Feature) :- min(Model, Feature).
 meets_feature_requirements(Model, Feature) :- max(Model, Feature).
 meets_feature_requirements(Model, Feature) :-
-<<<<<<< HEAD
     has(Model, _, _),
     required(Feature, _), !, fail.
 meets_feature_requirements(Model, _) :- has(Model, _, _).
-=======
-    has(Model, Feature, BoolValue),
-    required(Feature, BoolValue).
-meets_feature_requirements(Model, Feature) :- has(Model, Feature, _), not(required(Feature, _)).
-meets_feature_requirements(Model, Feature) :- not(has(Model, Feature, _)), not(required(Feature, _)).
->>>>>>> 1c12c0f... front_camera_matrix requirements repaired, new knowledge base, works for models which has not all features listed
 
 /**
  * User requirements translated to requirements for models.
@@ -47,13 +40,14 @@ required(front_camera_matrix, excellent) :- user_requirement(front_camera_matrix
 required(front_camera_matrix, good) :- user_requirement(front_camera_matrix, good).
 required(cpu_n_cores, many) :- user_requirement(cpu_n_cores, many).
 required(cpu_n_cores, medium_amount) :- user_requirement(cpu_n_cores, medium_amount).
+>>>>>>> bde6ab6... new features added
 
 % TODO: this returns the same model multiple times
 model(Model) :-
     meets_feature_requirements(Model, cpu_frequency),
-
+<<<<<<< HEAD
     meets_feature_requirements(Model, battery_capacity).
-
+=======
     meets_feature_requirements(Model, battery_capacity),
     meets_feature_requirements(Model, storage),
     meets_feature_requirements(Model, touch_screen),
@@ -75,4 +69,4 @@ model(Model) :-
      meets_feature_requirements(Model, front_camera_matrix).
 
 **/
-
+>>>>>>> bde6ab6... new features added
