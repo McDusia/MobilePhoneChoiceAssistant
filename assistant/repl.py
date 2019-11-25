@@ -35,6 +35,22 @@ class AssistantCmd(cmd.Cmd):
 
 # TODO: all these methods looks the same...
 
+   # def do_feature(self, arg: str, feature):
+   #     """Sets requirement for feature
+   #     """
+    #    try:
+    #        feature = self._command_parser.parse_feature(arg, feature) # bierze jaka jest wartość
+    #        self._phone_choice_assistant.feature(feature,feature) # ustawia to jako pole
+    #    except ValueError:
+    #        self._print(feature, " can be yes or no")
+
+    #@staticmethod
+    #def complete_feature(prefix: str, *_args, feature) -> List[str]:
+    #    names = (v.name.lower() for v in NFC)
+    #    return [name
+    #            for name in names
+    #            if name.startswith(prefix.lower())]
+
     def do_battery_life(self, arg: str):
         """Sets requirement for battery life.
 Either good or irrelevant."""
@@ -168,7 +184,7 @@ Either good or irrelevant."""
             Either excellent, good or irrelevant."""
             try:
                 front_camera_matrix = self._command_parser.parse_front_camera_matrix(arg)
-                self._phone_choice_assistant.cpu_n_cores(front_camera_matrix)
+                self._phone_choice_assistant.front_camera_matrix(front_camera_matrix)
             except ValueError:
                 self._print("ERROR! Front camera matrix can be either excellent, good or irrelevant")
 

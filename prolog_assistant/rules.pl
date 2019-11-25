@@ -14,6 +14,7 @@ meets_feature_requirements(Model, Feature) :-
     has(Model, Feature, BoolValue),
     required(Feature, BoolValue).
 meets_feature_requirements(Model, Feature) :- has(Model, Feature, _), not(required(Feature, _)).
+meets_feature_requirements(Model, Feature) :- not(has(Model, Feature, _)), not(required(Feature, _)).
 
 /**
  * User requirements translated to requirements for models.
