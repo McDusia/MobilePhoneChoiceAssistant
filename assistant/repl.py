@@ -139,9 +139,44 @@ Either good or irrelevant."""
                     if name.startswith(prefix.lower())]
 
     def do_phone_for_business(self, arg: str):
-            """Sets requirement for phone for business
+            """Sets requirement: phone for business
             No arguments required """
             self._phone_choice_assistant.phone_for_business()
+
+    def do_big_screen(self, arg: str):
+            """Sets requirement: big screen
+            No arguments required """
+            self._phone_choice_assistant.big_screen()
+
+    def do_very_big_screen(self, arg: str):
+            """Sets requirement: very big screen
+            No arguments required """
+            self._phone_choice_assistant.very_big_screen()
+
+    def do_phone_for_teenager(self, arg: str):
+            """Sets requirement: phone for teenager
+            No arguments required """
+            self._phone_choice_assistant.phone_for_teenager()
+
+    def do_phone_to_listening_music(self, arg: str):
+            """Sets requirement: phone to listenning music
+            No arguments required """
+            self._phone_choice_assistant.phone_to_listening_music()
+
+    def do_phone_for_social_media(self, arg: str):
+            """Sets requirement: phone for social media
+            No arguments required """
+            self._phone_choice_assistant.phone_for_social_media()
+
+    def do_phone_to_play_games(self, arg: str):
+            """Sets requirement: phone to play games
+            No arguments required """
+            self._phone_choice_assistant.phone_to_play_games()
+
+    def do_phone_to_make_photos(self, arg: str):
+            """Sets requirement: phone to make photos
+            No arguments required """
+            self._phone_choice_assistant.phone_to_make_photos()
 
     def _print(self, *args, **kwargs):
         kwargs["file"] = self.stdout

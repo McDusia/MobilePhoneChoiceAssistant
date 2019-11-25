@@ -63,3 +63,31 @@ class PhoneChoiceAssistant(ABC):
     @abstractmethod
     def phone_for_business(self):
         ...
+
+    @abstractmethod
+    def big_screen(self):
+        ...
+
+    @abstractmethod
+    def very_big_screen(self):
+        ...
+
+    @abstractmethod
+    def phone_for_teenager(self):
+        ...
+
+    @abstractmethod
+    def phone_to_listening_music(self):
+        ...
+
+    @abstractmethod
+    def phone_for_social_media(self):
+        ...
+
+    @abstractmethod
+    def phone_to_play_games(self):
+        ...
+
+    @abstractmethod
+    def phone_to_make_photos(self):
+        ...
