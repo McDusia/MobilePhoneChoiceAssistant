@@ -1,6 +1,6 @@
 import click
 
-from assistant.prolog.prolog_phone_choice_assistant import PrologPhoneChoiceAssistant
+from assistant.prolog.phone_choice_assistant import PrologPhoneChoiceAssistant
 from assistant.repl import AssistantCmd
 
 

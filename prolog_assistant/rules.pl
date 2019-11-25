@@ -39,6 +39,67 @@ required(cpu_n_cores, medium_amount) :- user_requirement(cpu_n_cores, medium_amo
  */
 required(nfc, true) :- user_requirement(phone_for_business, yes).
 required(dual_sim, true) :- user_requirement(phone_for_business, yes).
+required(very_big_screen, true) :- user_requirement(phone_for_business, yes).
+required(battery_capacity, large) :- user_requirement(phone_for_business, yes).
+
+/**
+ * Phone for trips - requirements
+ */
+required(gps, true) :- user_requirement(phone_for_trips, yes).
+required(water_resistant, true) :- user_requirement(phone_for_trips, yes).
+required(price, cheap) :- user_requirement(phone_for_trips, yes).
+required(back_camera_matrix, good) :- user_requirement(phone_for_trips, yes).
+
+/**
+ * Phone for teenager
+ */
+required(gps, true) :- user_requirement(phone_for_teenager, yes).
+required(water_resistant, true) :- user_requirement(phone_for_teenager, yes).
+required(price, medium) :- user_requirement(phone_for_teenager, yes).
+required(back_camera_matrix, good) :- user_requirement(phone_for_teenager, yes).
+required(front_camera_matrix, good) :- user_requirement(phone_for_teenager, yes).
+required(battery_capacity, big) :- user_requirement(phone_for_teenager, yes).
+required(touch_screen, true) :- user_requirement(phone_for_teenager, yes).
+
+/**
+ * Phone to listening to music
+ */
+required(storage, high) :- user_requirement(phone_to_listening_to_music, yes).
+required(has_jack, true) :- user_requirement(phone_to_listening_to_music, yes).
+
+/**
+ * Phone to social media
+ */
+required(cpu_frequency, high) :- user_requirement(phone_for_social_media, yes).
+required(front_camera_matrix, good) :- user_requirement(phone_for_social_media, yes).
+required(back_camera_matrix, good) :- user_requirement(phone_for_social_media, yes).
+required(touch_screen, true) :- user_requirement(phone_for_social_media, yes).
+required(big_screen, true) :- user_requirement(phone_for_social_media, yes).
+
+/**
+ * Phone to make photos
+ */
+required(back_camera_matrix, excellent) :- user_requirement(phone_to_make_photos, yes).
+required(storage, high) :- user_requirement(phone_to_make_photos, yes).
+
+/**
+ * Phone to play games
+ */
+required(storage, high) :- user_requirement(phone_to_play_games, yes).
+required(big_screen, true) :- user_requirement(phone_to_play_games, yes).
+required(cpu_frequency, high) :- user_requirement(phone_to_play_games, yes).
+required(cpu_n_cores, medium_amount) :- user_requirement(phone_to_play_games, yes).
+required(display_number_of_colors, many) :- user_requirement(phone_to_play_games, yes).
+
+required(very_big_screen, true) :- user_requirement(very_big_screen, yes).
+required(big_screen, true) :- user_requirement(big_screen, yes).
+
+required(display_diagonal, great) :- required(very_big_screen, true).
+required(display_width, great) :- required(very_big_screen, true).
+required(display_height, great) :- required(very_big_screen, true).
+required(display_diagonal, medium) :- required(big_screen, true).
+required(display_width, medium) :- required(big_screen, true).
+required(display_height, medium) :- required(big_screen, true).
 
 
 is_sufficient(Model) :-
@@ -49,18 +110,17 @@ is_sufficient(Model) :-
 	meets_feature_requirements(Model, nfc),
 	meets_feature_requirements(Model, water_resistant),
 	meets_feature_requirements(Model, dual_sim),
+	meets_feature_requirements(Model, gps),
     meets_feature_requirements(Model, cpu_n_cores),
 	meets_feature_requirements(Model, back_camera_matrix),
-    meets_feature_requirements(Model, front_camera_matrix).
-    /**meets_feature_requirements(Model, display_diagonal),
+    meets_feature_requirements(Model, front_camera_matrix),
+    meets_feature_requirements(Model, display_diagonal),
     meets_feature_requirements(Model, display_width),
     meets_feature_requirements(Model, display_height),
-    meets_feature_requirements(Model, display_number_of_colors).
-     meets_feature_requirements(Model, storage),
+    meets_feature_requirements(Model, has_jack),
+   meets_feature_requirements(Model, display_number_of_colors),
+   meets_feature_requirements(Model, price).
+ /**
      meets_feature_requirements(Model, android_version),
-     meets_feature_requirements(Model, cpu_n_cores),
-     meets_feature_requirements(Model, back_camera_matrix),
-     meets_feature_requirements(Model, front_camera_matrix),
-     meets_feature_requirements(Model, front_camera_matrix).
 
 **/

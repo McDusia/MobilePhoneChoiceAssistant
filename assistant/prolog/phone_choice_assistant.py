@@ -81,6 +81,38 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         rule_key = "phone_for_business"
         self._require(rule_key, RequiredFeature_String)
 
+    def big_screen(self):
+        rule_key = "big_screen"
+        self._require(rule_key, RequiredFeature_String)
+
+    def very_big_screen(self):
+        rule_key = "very_big_screen"
+        self._require(rule_key, RequiredFeature_String)
+
+    def phone_for_teenager(self):
+        rule_key = "phone_for_teenager"
+        self._require(rule_key, RequiredFeature_String)
+
+    def phone_to_listening_music(self):
+        rule_key = "phone_to_listening_music"
+        self._require(rule_key, RequiredFeature_String)
+
+    def phone_for_social_media(self):
+        rule_key = "phone_for_social_media"
+        self._require(rule_key, RequiredFeature_String)
+
+    def phone_to_play_games(self):
+        rule_key = "phone_to_play_games"
+        self._require(rule_key, RequiredFeature_String)
+
+    def phone_to_make_photos(self):
+        rule_key = "phone_to_make_photos"
+        self._require(rule_key, RequiredFeature_String)
+
+    def phone_for_trips(self):
+        rule_key = "phone_for_trips"
+        self._require(rule_key, RequiredFeature_String)
+
     def _require(self, rule_key: str, value: Any):
         previous_rule = self._loaded_rules.get(rule_key)
         if previous_rule:
