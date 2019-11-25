@@ -3,7 +3,7 @@ from typing import Dict
 from typing import Generator
 from typing import Set
 from pyswip import Prolog
-from assistant.features import BatteryLife, CPUFrequency, DualSim, WaterResistance, NFC, TouchScreen, FrontCameraMatrix, \
+from assistant.features import BatteryLife, CPUFrequency, FrontCameraMatrix, \
     BackCameraMatrix, CpuNCores
 from assistant.phone_choice_assistant_interface import Model
 from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
@@ -11,6 +11,7 @@ from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
 RuleKey = str
 Rule = str
+RequiredFeature_String = "yes"
 
 
 class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
@@ -48,21 +49,21 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         rule_key = "cpu_frequency"
         self._require(rule_key, cpu_frequency.name.lower())
 
-    def touch_screen(self, touch_screen: TouchScreen):
+    def touch_screen(self):
         rule_key = "touch_screen"
-        self._require(rule_key, touch_screen.name.lower())
+        self._require(rule_key, RequiredFeature_String)
 
-    def nfc(self, nfc: NFC):
+    def nfc(self):
         rule_key = "nfc"
-        self._require(rule_key, nfc.name.lower())
+        self._require(rule_key,RequiredFeature_String)
 
-    def water_resistant(self, water_resistant: WaterResistance):
+    def water_resistant(self):
         rule_key = "touch_screen"
-        self._require(rule_key, water_resistant.name.lower())
+        self._require(rule_key, RequiredFeature_String)
 
-    def dual_sim(self, dual_sim: DualSim):
+    def dual_sim(self):
         rule_key = "dual_sim"
-        self._require(rule_key, dual_sim.name.lower())
+        self._require(rule_key, RequiredFeature_String)
 
     def cpu_n_cores(self, cpu_n_cores: CpuNCores):
         rule_key = "cpu_n_cores"
@@ -76,6 +77,10 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         rule_key = "front_camera_matrix"
         self._require(rule_key, front_camera_matrix.name.lower())
 
+    def phone_for_business(self):
+        rule_key = "phone_for_business"
+        self._require(rule_key, RequiredFeature_String)
+
     def _require(self, rule_key: str, value: Any):
         previous_rule = self._loaded_rules.get(rule_key)
         if previous_rule:
@@ -85,6 +90,6 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
             rule_key=rule_key,
             value=value,
         )
-
+        print(new_rule)
         self._prolog.asserta(new_rule)
         self._loaded_rules[rule_key] = new_rule

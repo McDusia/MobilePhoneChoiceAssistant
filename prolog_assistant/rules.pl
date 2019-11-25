@@ -34,6 +34,12 @@ required(front_camera_matrix, good) :- user_requirement(front_camera_matrix, goo
 required(cpu_n_cores, many) :- user_requirement(cpu_n_cores, many).
 required(cpu_n_cores, medium_amount) :- user_requirement(cpu_n_cores, medium_amount).
 
+/**
+ * Phone for business - requirements
+ */
+required(nfc, true) :- user_requirement(phone_for_business, yes).
+required(dual_sim, true) :- user_requirement(phone_for_business, yes).
+
 
 is_sufficient(Model) :-
     meets_feature_requirements(Model, cpu_frequency),
@@ -49,7 +55,7 @@ is_sufficient(Model) :-
     /**meets_feature_requirements(Model, display_diagonal),
     meets_feature_requirements(Model, display_width),
     meets_feature_requirements(Model, display_height),
-    meets_feature_requirements(Model, display_number_of_colors),
+    meets_feature_requirements(Model, display_number_of_colors).
      meets_feature_requirements(Model, storage),
      meets_feature_requirements(Model, android_version),
      meets_feature_requirements(Model, cpu_n_cores),

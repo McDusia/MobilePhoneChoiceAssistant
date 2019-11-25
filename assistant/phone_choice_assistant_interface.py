@@ -2,7 +2,7 @@ from abc import ABC
 from abc import abstractmethod
 from typing import Set
 
-from assistant.features import BatteryLife, CPUFrequency, TouchScreen, DualSim, WaterResistance, NFC, BackCameraMatrix, \
+from assistant.features import BatteryLife, CPUFrequency, BackCameraMatrix, \
     FrontCameraMatrix, CpuNCores
 Model = str
 
@@ -21,19 +21,19 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
-    def touch_screen(self, touch_screen: TouchScreen):
+    def touch_screen(self):
         ...
 
     @abstractmethod
-    def nfc(self, nfc: NFC):
+    def nfc(self):
         ...
 
     @abstractmethod
-    def water_resistant(self, water_resistant: WaterResistance):
+    def water_resistant(self):
         ...
 
     @abstractmethod
-    def dual_sim(self, dual_sim: DualSim):
+    def dual_sim(self):
         ...
 
     @abstractmethod
@@ -46,4 +46,8 @@ class PhoneChoiceAssistant(ABC):
 
     @abstractmethod
     def front_camera_matrix(self, front_camera_matrix: FrontCameraMatrix):
+        ...
+
+    @abstractmethod
+    def phone_for_business(self):
         ...

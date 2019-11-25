@@ -1,8 +1,7 @@
 import cmd
-from typing import TextIO, List
+from typing import TextIO, List, Any
 
-from assistant.phone_choice_assistant_interface import BatteryLife, CPUFrequency, NFC, WaterResistance, TouchScreen, \
-    DualSim, CpuNCores, FrontCameraMatrix, BackCameraMatrix
+from assistant.phone_choice_assistant_interface import BatteryLife, CPUFrequency, CpuNCores, FrontCameraMatrix, BackCameraMatrix
 from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
 
@@ -34,22 +33,6 @@ class AssistantCmd(cmd.Cmd):
         return True
 
 # TODO: all these methods looks the same...
-
-   # def do_feature(self, arg: str, feature):
-   #     """Sets requirement for feature
-   #     """
-    #    try:
-    #        feature = self._command_parser.parse_feature(arg, feature) # bierze jaka jest wartość
-    #        self._phone_choice_assistant.feature(feature,feature) # ustawia to jako pole
-    #    except ValueError:
-    #        self._print(feature, " can be yes or no")
-
-    #@staticmethod
-    #def complete_feature(prefix: str, *_args, feature) -> List[str]:
-    #    names = (v.name.lower() for v in NFC)
-    #    return [name
-    #            for name in names
-    #            if name.startswith(prefix.lower())]
 
     def do_battery_life(self, arg: str):
         """Sets requirement for battery life.
@@ -85,67 +68,23 @@ Either good or irrelevant."""
 
     def do_nfc(self, arg: str):
         """Sets requirement for NFC
-        Either yes or no"""
-        try:
-            nfc = self._command_parser.parse_nfc(arg) # bierze jaka jest wartość
-            self._phone_choice_assistant.nfc(nfc) # ustawia to jako pole
-        except ValueError:
-            self._print("NFC can be yes or no")
-
-    @staticmethod
-    def complete_nfc(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in NFC)
-        return [name
-                for name in names
-                if name.startswith(prefix.lower())]
+        No arguments required"""
+        self._phone_choice_assistant.nfc()
 
     def do_water_resistant(self, arg: str):
         """Sets requirement for water resistance
-        Either yes or no"""
-        try:
-            water_resistance = self._command_parser.parse_water_resistance(arg) # bierze jaka jest wartość
-            self._phone_choice_assistant.water_resistant(water_resistance) # ustawia to jako pole
-        except ValueError:
-            self._print("Water resistance can be yes or no")
-
-    @staticmethod
-    def complete_water_resistant(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in NFC)
-        return [name
-                for name in names
-                if name.startswith(prefix.lower())]
+        No arguments required"""
+        self._phone_choice_assistant.water_resistant()
 
     def do_dual_sim(self, arg: str):
         """Sets requirement for dual_sim
-        Either yes or no"""
-        try:
-            dual_sim = self._command_parser.parse_dual_sim(arg) # bierze jaka jest wartość
-            self._phone_choice_assistant.dual_sim(dual_sim) # ustawia to jako pole
-        except ValueError:
-            self._print("Dual sim can be yes or no")
-
-    @staticmethod
-    def complete_dual_sim(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in NFC)
-        return [name
-                for name in names
-                if name.startswith(prefix.lower())]
+        No arguments required"""
+        self._phone_choice_assistant.dual_sim()
 
     def do_touch_screen(self, arg: str):
         """Sets requirement for touch_screen
-        Either yes or no"""
-        try:
-            touch_screen = self._command_parser.parse_touch_screen(arg)
-            self._phone_choice_assistant.touch_screen(touch_screen)
-        except ValueError:
-            self._print("NFC can be yes or no")
-
-    @staticmethod
-    def complete_touch_screen(prefix: str, *_args) -> List[str]:
-        names = (v.name.lower() for v in TouchScreen)
-        return [name
-                for name in names
-                if name.startswith(prefix.lower())]
+        No arguments required"""
+        self._phone_choice_assistant.touch_screen()
 
     def do_cpu_n_cores(self, arg: str):
             """Sets requirement for cpu_n_cores
@@ -195,12 +134,22 @@ Either good or irrelevant."""
                     for name in names
                     if name.startswith(prefix.lower())]
 
+    def do_phone_for_business(self, arg: str):
+            """Sets requirement for phone for business
+            No arguments required """
+            self._phone_choice_assistant.phone_for_business()
+
     def _print(self, *args, **kwargs):
         kwargs["file"] = self.stdout
         print(*args, **kwargs)
 
 
 class CommandParser:
+
+    @staticmethod
+    def parse_feature(input_str: str, feature_object: Any) -> Any:
+        return feature_object.__class__.__name__(input_str.lower())
+
     @staticmethod
     def parse_battery_life(input_str: str) -> BatteryLife:
         return BatteryLife(input_str.lower())
@@ -208,22 +157,6 @@ class CommandParser:
     @staticmethod
     def parse_cpu_frequency(input_str: str) -> CPUFrequency:
         return CPUFrequency(input_str.lower())
-
-    @staticmethod
-    def parse_nfc(input_str: str) -> NFC:
-        return NFC(input_str.lower())
-
-    @staticmethod
-    def parse_water_resistance(input_str: str) -> WaterResistance:
-        return WaterResistance(input_str.lower())
-
-    @staticmethod
-    def parse_dual_sim(input_str: str) -> DualSim:
-        return DualSim(input_str.lower())
-
-    @staticmethod
-    def parse_touch_screen(input_str: str) -> TouchScreen:
-        return TouchScreen(input_str.lower())
 
     @staticmethod
     def parse_cpu_n_cores(input_str: str) -> CpuNCores:

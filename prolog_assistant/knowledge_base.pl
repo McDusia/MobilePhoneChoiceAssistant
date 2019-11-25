@@ -34,7 +34,7 @@ has("OnePlus One", storage, 16384).
 has("OnePlus One", touch_screen, true).
 has("OnePlus One", nfc, true).
 has("OnePlus One", water_resistant, true).
-has("OnePlus One", dual_sim, false).
+has("OnePlus One", dual_sim, true).
 has("OnePlus One", android_version, 4.4).
 has("OnePlus One", cpu_frequency, 2500).
 has("OnePlus One", cpu_n_cores, 4).

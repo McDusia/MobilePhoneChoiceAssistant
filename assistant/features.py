@@ -36,65 +36,10 @@ class AndroidVersion(Enum):
     IRRELEVANT = "irrelevant"
 
 
-class GPS(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class AGPS(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class Glonass(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class Galileo(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class QuickCharge(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class HasJack(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class USBC(Enum):
-    YES = "yes"
-    NO = "no"
-
-
 class DisplaySize(Enum):
     BIG = "long"
     MEDIUM = "medium"
     SMALL = "small"
-
-
-class TouchScreen(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class NFC(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class WaterResistance(Enum):
-    YES = "yes"
-    NO = "no"
-
-
-class DualSim(Enum):
-    YES = "yes"
-    NO = "no"
 
 
 class BackCameraMatrix(Enum):

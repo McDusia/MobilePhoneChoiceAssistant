@@ -114,3 +114,14 @@ class Price(Enum):
     MEDIUM = "medium"
     CHEAP = "cheap"
     VERY_CHEAP = "very_cheap"
+
+
+class PhoneForBusiness(Enum):
+    YES = "yes"
+    NO = "no"
+
+
+class PhoneForTrip(Enum):
+    YES = "yes"
+    NO = "no"
+
