@@ -17,6 +17,10 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
+    def clear_requirements(self):
+        ...
+
+    @abstractmethod
     def battery_life(self, battery_life: BatteryLife):
         ...
 

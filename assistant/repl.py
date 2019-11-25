@@ -35,6 +35,10 @@ class AssistantCmd(cmd.Cmd):
     def do_EOF(self, _arg: str):
         return True
 
+    def do_clear_requirements(self, arg: str):
+        """Remove all added user requirements."""
+        self._phone_choice_assistant.clear_requirements()
+
 # TODO: all these methods looks the same...
 
     def do_battery_life(self, arg: str):
