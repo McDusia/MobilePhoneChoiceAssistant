@@ -3,10 +3,6 @@ from typing import Dict
 from typing import Generator
 from typing import Set
 from pyswip import Prolog
-
-
-from assistant.features import BatteryLife, CPUFrequency
-
 from assistant.features import BatteryLife, CPUFrequency, FrontCameraMatrix, \
     BackCameraMatrix, CpuNCores
 from assistant.phone_choice_assistant_interface import Model
@@ -19,6 +15,7 @@ RequiredFeature_String = "yes"
 
 
 class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
+
     _REQUIRE_TEMPLATE = "user_requirement({rule_key}, {value})"
 
     def __init__(self,
@@ -40,7 +37,7 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         self._prolog.consult(knowledge_base_file)
 
     def suggest(self) -> Set[Model]:
-        models: Generator[Dict[str, bytes], None, None] = self._prolog.query("model(Model)")
+        models: Generator[Dict[str, bytes], None, None] = self._prolog.query("is_sufficient(Model)")
         models_list = [d["Model"].decode("utf-8") for d in models]
         return set(models_list)
 
@@ -67,7 +64,6 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
     def dual_sim(self):
         rule_key = "dual_sim"
         self._require(rule_key, RequiredFeature_String)
->>>>>>> 5542842... yes/no rules simplified, new rule: phone_for_business
 
     def cpu_n_cores(self, cpu_n_cores: CpuNCores):
         rule_key = "cpu_n_cores"

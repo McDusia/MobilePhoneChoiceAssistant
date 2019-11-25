@@ -1,9 +1,6 @@
 import cmd
 from typing import TextIO, List, Any
 
-
-from assistant.phone_choice_assistant_interface import BatteryLife, CPUFrequency, \
-    CpuNCores, FrontCameraMatrix, BackCameraMatrix
 from assistant.phone_choice_assistant_interface import BatteryLife, CPUFrequency, CpuNCores, FrontCameraMatrix, BackCameraMatrix
 from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
@@ -92,7 +89,6 @@ Either good or irrelevant."""
         """Sets requirement for touch_screen
         No arguments required"""
         self._phone_choice_assistant.touch_screen()
-
 
     def do_cpu_n_cores(self, arg: str):
             """Sets requirement for cpu_n_cores
@@ -194,9 +190,6 @@ class CommandParser:
         return feature_object.__class__.__name__(input_str.lower())
 
     @staticmethod
-    def parse_battery_life(input_str: str) -> BatteryLife:
-        return BatteryLife(input_str.lower())
-
     def parse_battery_life(input_str: str) -> BatteryLife:
         return BatteryLife(input_str.lower())
 

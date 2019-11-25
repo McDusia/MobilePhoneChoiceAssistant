@@ -2,12 +2,8 @@ from abc import ABC
 from abc import abstractmethod
 from typing import Set
 
-from assistant.features import BatteryLife, CPUFrequency
-
-
 from assistant.features import BatteryLife, CPUFrequency, BackCameraMatrix, \
     FrontCameraMatrix, CpuNCores
-
 Model = str
 
 
@@ -18,10 +14,6 @@ class PhoneChoiceAssistant(ABC):
 
     @abstractmethod
     def clear_requirements(self):
-        ...
-
-    @abstractmethod
-    def cpu_frequency(self, cpu_frequency: CPUFrequency):
         ...
 
     @abstractmethod
