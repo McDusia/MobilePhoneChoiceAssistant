@@ -184,7 +184,6 @@ Either good or irrelevant."""
 
 
 class CommandParser:
-
     @staticmethod
     def parse_feature(input_str: str, feature_object: Any) -> Any:
         return feature_object.__class__.__name__(input_str.lower())

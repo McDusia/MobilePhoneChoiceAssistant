@@ -122,4 +122,5 @@ is_sufficient(Model) :-
    meets_feature_requirements(Model, price).
  /**
      meets_feature_requirements(Model, android_version),
+
 **/
