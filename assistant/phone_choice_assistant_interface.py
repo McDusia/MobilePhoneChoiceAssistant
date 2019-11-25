@@ -77,7 +77,7 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
-    def cpu_frequency(self, cpu_frequency: UserRequirementCPUFrequency):
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
         ...
 
     @abstractmethod
