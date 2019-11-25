@@ -16,16 +16,11 @@ min(Model, Feature) :-
 meets_feature_requirements(Model, Feature) :- min(Model, Feature).
 meets_feature_requirements(Model, Feature) :- max(Model, Feature).
 meets_feature_requirements(Model, Feature) :-
-<<<<<<< HEAD
-    has(Model, _, _),
-    required(Feature, _), !, fail.
-meets_feature_requirements(Model, _) :- has(Model, _, _).
-=======
     has(Model, Feature, BoolValue),
     required(Feature, BoolValue).
 meets_feature_requirements(Model, Feature) :- has(Model, Feature, _), not(required(Feature, _)).
 meets_feature_requirements(Model, Feature) :- not(has(Model, Feature, _)), not(required(Feature, _)).
->>>>>>> 1c12c0f... front_camera_matrix requirements repaired, new knowledge base, works for models which has not all features listed
+
 
 /**
  * User requirements translated to requirements for models.
@@ -34,9 +29,7 @@ required(battery_capacity, ok) :- user_requirement(battery_life, good).
 required(battery_capacity, large) :- user_requirement(battery_life, excellent).
 required(cpu_frequency, low) :- user_requirement(cpu_frequency, low).
 required(cpu_frequency, high) :- user_requirement(cpu_frequency, high).
-<<<<<<< HEAD
 
-=======
 required(touch_screen, true) :- user_requirement(touch_screen, yes).
 required(nfc, true) :- user_requirement(nfc, yes).
 required(water_resistant, true) :- user_requirement(water_resistant, yes).
@@ -48,8 +41,15 @@ required(front_camera_matrix, good) :- user_requirement(front_camera_matrix, goo
 required(cpu_n_cores, many) :- user_requirement(cpu_n_cores, many).
 required(cpu_n_cores, medium_amount) :- user_requirement(cpu_n_cores, medium_amount).
 
-% TODO: this returns the same model multiple times
-model(Model) :-
+
+/**
+ * Phone for business - requirements
+ */
+required(nfc, true) :- user_requirement(phone_for_business, yes).
+required(dual_sim, true) :- user_requirement(phone_for_business, yes).
+
+
+is_sufficient(Model) :-
     meets_feature_requirements(Model, cpu_frequency),
 
     meets_feature_requirements(Model, battery_capacity).
@@ -66,7 +66,7 @@ model(Model) :-
     /**meets_feature_requirements(Model, display_diagonal),
     meets_feature_requirements(Model, display_width),
     meets_feature_requirements(Model, display_height),
-    meets_feature_requirements(Model, display_number_of_colors),
+    meets_feature_requirements(Model, display_number_of_colors).
      meets_feature_requirements(Model, storage),
      meets_feature_requirements(Model, android_version),
      meets_feature_requirements(Model, cpu_n_cores),

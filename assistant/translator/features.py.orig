@@ -10,9 +10,6 @@ class BatteryCapacity(Enum):
 class CPUFrequency(Enum):
     LOW = "low"
     HIGH = "high"
-<<<<<<< HEAD
-=======
-
 
 class Memory(Enum):
     HIGH = "high"
@@ -116,4 +113,17 @@ class Price(Enum):
     MEDIUM = "medium"
     CHEAP = "cheap"
     VERY_CHEAP = "very_cheap"
->>>>>>> bde6ab6... new features added
+
+<<<<<<< HEAD
+=======
+
+class PhoneForBusiness(Enum):
+    YES = "yes"
+    NO = "no"
+
+
+class PhoneForTrip(Enum):
+    YES = "yes"
+    NO = "no"
+
+>>>>>>> 5542842... yes/no rules simplified, new rule: phone_for_business

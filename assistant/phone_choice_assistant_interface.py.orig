@@ -3,12 +3,14 @@ from abc import abstractmethod
 from typing import Set
 
 <<<<<<< HEAD
-from assistant.features import UserRequirementBatteryLife, UserRequirementCPUFrequency
+from assistant.features import BatteryLife, CPUFrequency
+
 
 =======
-from assistant.features import BatteryLife, CPUFrequency, TouchScreen, DualSim, WaterResistance, NFC, BackCameraMatrix, \
+>>>>>>> 5542842... yes/no rules simplified, new rule: phone_for_business
+from assistant.features import BatteryLife, CPUFrequency, BackCameraMatrix, \
     FrontCameraMatrix, CpuNCores
->>>>>>> bde6ab6... new features added
+
 Model = str
 
 
@@ -18,6 +20,7 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
+<<<<<<< HEAD
     def battery_life(self, battery_life: UserRequirementBatteryLife):
         ...
 
@@ -25,6 +28,30 @@ class PhoneChoiceAssistant(ABC):
     def cpu_frequency(self, cpu_frequency: UserRequirementCPUFrequency):
         ...
 
+=======
+    def battery_life(self, battery_life: BatteryLife):
+        ...
+
+    @abstractmethod
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
+        ...
+
+    @abstractmethod
+    def touch_screen(self):
+        ...
+
+    @abstractmethod
+    def nfc(self):
+        ...
+
+    @abstractmethod
+    def water_resistant(self):
+        ...
+
+    @abstractmethod
+    def dual_sim(self):
+        ...
+>>>>>>> 5542842... yes/no rules simplified, new rule: phone_for_business
 
     @abstractmethod
     def cpu_n_cores(self, cpu_n_cores: CpuNCores):
@@ -36,4 +63,8 @@ class PhoneChoiceAssistant(ABC):
 
     @abstractmethod
     def front_camera_matrix(self, front_camera_matrix: FrontCameraMatrix):
+        ...
+
+    @abstractmethod
+    def phone_for_business(self):
         ...

@@ -1,11 +1,10 @@
 import cmd
-from typing import TextIO, List
+from typing import TextIO, List, Any
 
 
-from assistant.phone_choice_assistant_interface import UserRequirementBatteryLife, UserRequirementCPUFrequency
-=======
 from assistant.phone_choice_assistant_interface import BatteryLife, CPUFrequency, \
     CpuNCores, FrontCameraMatrix, BackCameraMatrix
+from assistant.phone_choice_assistant_interface import BatteryLife, CPUFrequency, CpuNCores, FrontCameraMatrix, BackCameraMatrix
 from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
 
@@ -38,22 +37,6 @@ class AssistantCmd(cmd.Cmd):
 
 # TODO: all these methods looks the same...
 
-   # def do_feature(self, arg: str, feature):
-   #     """Sets requirement for feature
-   #     """
-    #    try:
-    #        feature = self._command_parser.parse_feature(arg, feature) # bierze jaka jest wartość
-    #        self._phone_choice_assistant.feature(feature,feature) # ustawia to jako pole
-    #    except ValueError:
-    #        self._print(feature, " can be yes or no")
-
-    #@staticmethod
-    #def complete_feature(prefix: str, *_args, feature) -> List[str]:
-    #    names = (v.name.lower() for v in NFC)
-    #    return [name
-    #            for name in names
-    #            if name.startswith(prefix.lower())]
-
     def do_battery_life(self, arg: str):
         """Sets requirement for battery life.
 Either good or irrelevant."""
@@ -85,6 +68,27 @@ Either good or irrelevant."""
         return [name
                 for name in names
                 if name.startswith(prefix.lower())]
+
+    def do_nfc(self, arg: str):
+        """Sets requirement for NFC
+        No arguments required"""
+        self._phone_choice_assistant.nfc()
+
+    def do_water_resistant(self, arg: str):
+        """Sets requirement for water resistance
+        No arguments required"""
+        self._phone_choice_assistant.water_resistant()
+
+    def do_dual_sim(self, arg: str):
+        """Sets requirement for dual_sim
+        No arguments required"""
+        self._phone_choice_assistant.dual_sim()
+
+    def do_touch_screen(self, arg: str):
+        """Sets requirement for touch_screen
+        No arguments required"""
+        self._phone_choice_assistant.touch_screen()
+
 
     def do_cpu_n_cores(self, arg: str):
             """Sets requirement for cpu_n_cores
@@ -134,23 +138,32 @@ Either good or irrelevant."""
                     for name in names
                     if name.startswith(prefix.lower())]
 
+    def do_phone_for_business(self, arg: str):
+            """Sets requirement for phone for business
+            No arguments required """
+            self._phone_choice_assistant.phone_for_business()
+
     def _print(self, *args, **kwargs):
         kwargs["file"] = self.stdout
         print(*args, **kwargs)
 
 
 class CommandParser:
-    @staticmethod
-    def parse_battery_life(input_str: str) -> UserRequirementBatteryLife:
-        return UserRequirementBatteryLife(input_str.lower())
 
     @staticmethod
-<<<<<<< HEAD
-    def parse_cpu_frequency(input_str: str) -> UserRequirementCPUFrequency:
-        return UserRequirementCPUFrequency(input_str.lower())
-=======
-    def parse_touch_screen(input_str: str) -> TouchScreen:
-        return TouchScreen(input_str.lower())
+    def parse_feature(input_str: str, feature_object: Any) -> Any:
+        return feature_object.__class__.__name__(input_str.lower())
+
+    @staticmethod
+    def parse_battery_life(input_str: str) -> BatteryLife:
+        return BatteryLife(input_str.lower())
+
+    def parse_battery_life(input_str: str) -> BatteryLife:
+        return BatteryLife(input_str.lower())
+
+    @staticmethod
+    def parse_cpu_frequency(input_str: str) -> CPUFrequency:
+        return CPUFrequency(input_str.lower())
 
     @staticmethod
     def parse_cpu_n_cores(input_str: str) -> CpuNCores:
@@ -163,4 +176,3 @@ class CommandParser:
     @staticmethod
     def parse_front_camera_matrix(input_str: str) -> FrontCameraMatrix:
         return FrontCameraMatrix(input_str.lower())
->>>>>>> bde6ab6... new features added

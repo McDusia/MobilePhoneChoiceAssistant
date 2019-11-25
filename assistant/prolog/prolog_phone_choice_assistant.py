@@ -4,6 +4,7 @@ from typing import Generator
 from typing import Set
 from pyswip import Prolog
 
+
 from assistant.features import BatteryLife, CPUFrequency
 
 from assistant.features import BatteryLife, CPUFrequency, FrontCameraMatrix, \
@@ -14,6 +15,7 @@ from assistant.phone_choice_assistant_interface import PhoneChoiceAssistant
 
 RuleKey = str
 Rule = str
+RequiredFeature_String = "yes"
 
 
 class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
@@ -48,7 +50,24 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
 
     def cpu_frequency(self, cpu_frequency: CPUFrequency):
         rule_key = "cpu_frequency"
-        self._require(rule_key, cpu_frequency.name.lower()) # ile użytkownik chce capacity
+        self._require(rule_key, cpu_frequency.name.lower())
+
+    def touch_screen(self):
+        rule_key = "touch_screen"
+        self._require(rule_key, RequiredFeature_String)
+
+    def nfc(self):
+        rule_key = "nfc"
+        self._require(rule_key,RequiredFeature_String)
+
+    def water_resistant(self):
+        rule_key = "touch_screen"
+        self._require(rule_key, RequiredFeature_String)
+
+    def dual_sim(self):
+        rule_key = "dual_sim"
+        self._require(rule_key, RequiredFeature_String)
+>>>>>>> 5542842... yes/no rules simplified, new rule: phone_for_business
 
     def cpu_n_cores(self, cpu_n_cores: CpuNCores):
         rule_key = "cpu_n_cores"
@@ -62,6 +81,10 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         rule_key = "front_camera_matrix"
         self._require(rule_key, front_camera_matrix.name.lower())
 
+    def phone_for_business(self):
+        rule_key = "phone_for_business"
+        self._require(rule_key, RequiredFeature_String)
+
     def _require(self, rule_key: str, value: Any):
         previous_rule = self._loaded_rules.get(rule_key)
         if previous_rule:
@@ -71,6 +94,6 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
             rule_key=rule_key,
             value=value,
         )
-
+        print(new_rule)
         self._prolog.asserta(new_rule)
         self._loaded_rules[rule_key] = new_rule

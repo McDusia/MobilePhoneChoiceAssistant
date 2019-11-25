@@ -114,3 +114,4 @@ class Price(Enum):
     CHEAP = "cheap"
     VERY_CHEAP = "very_cheap"
 
+
