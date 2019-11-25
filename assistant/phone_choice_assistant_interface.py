@@ -21,10 +21,6 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
-    def battery_life(self, battery_life: BatteryLife):
-        ...
-
-    @abstractmethod
     def cpu_frequency(self, cpu_frequency: CPUFrequency):
         ...
 

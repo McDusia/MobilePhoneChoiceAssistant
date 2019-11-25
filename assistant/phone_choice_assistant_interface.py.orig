@@ -2,12 +2,9 @@ from abc import ABC
 from abc import abstractmethod
 from typing import Set
 
-<<<<<<< HEAD
 from assistant.features import BatteryLife, CPUFrequency
 
 
-=======
->>>>>>> 5542842... yes/no rules simplified, new rule: phone_for_business
 from assistant.features import BatteryLife, CPUFrequency, BackCameraMatrix, \
     FrontCameraMatrix, CpuNCores
 
@@ -20,15 +17,21 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
-<<<<<<< HEAD
-    def battery_life(self, battery_life: UserRequirementBatteryLife):
+    def clear_requirements(self):
         ...
 
     @abstractmethod
-    def cpu_frequency(self, cpu_frequency: UserRequirementCPUFrequency):
+<<<<<<< HEAD
+    def battery_life(self, battery_life: BatteryLife):
         ...
 
+    @abstractmethod
+    def cpu_frequency(self, cpu_frequency: CPUFrequency):
+        ...
+
+    @abstractmethod
 =======
+>>>>>>> c5896c2... added possibility to clear requirements in the runtime
     def battery_life(self, battery_life: BatteryLife):
         ...
 
@@ -51,7 +54,6 @@ class PhoneChoiceAssistant(ABC):
     @abstractmethod
     def dual_sim(self):
         ...
->>>>>>> 5542842... yes/no rules simplified, new rule: phone_for_business
 
     @abstractmethod
     def cpu_n_cores(self, cpu_n_cores: CpuNCores):
@@ -67,4 +69,32 @@ class PhoneChoiceAssistant(ABC):
 
     @abstractmethod
     def phone_for_business(self):
+        ...
+
+    @abstractmethod
+    def big_screen(self):
+        ...
+
+    @abstractmethod
+    def very_big_screen(self):
+        ...
+
+    @abstractmethod
+    def phone_for_teenager(self):
+        ...
+
+    @abstractmethod
+    def phone_to_listening_music(self):
+        ...
+
+    @abstractmethod
+    def phone_for_social_media(self):
+        ...
+
+    @abstractmethod
+    def phone_to_play_games(self):
+        ...
+
+    @abstractmethod
+    def phone_to_make_photos(self):
         ...
