@@ -127,4 +127,5 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         self._loaded_rules[rule_key] = new_rule
 
     def clear_requirements(self):
-        self._prolog.retract("user_requirement(A,B)")
+        self._prolog.retractall("user_requirement(A,B)")
+        self._loaded_rules = dict()
