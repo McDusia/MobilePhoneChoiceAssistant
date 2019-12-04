@@ -4920,6 +4920,9 @@ has("ZTE Blade V10", price, 1247.6).
 down_threshold(front_camera_matrix, good, 2.0).
 down_threshold(front_camera_matrix, excellent, 5.0).
 down_threshold(front_camera_matrix, irrelevant, 0.3).
+down_threshold(back_camera_matrix, good, 4.1).
+down_threshold(back_camera_matrix, excellent, 8.0).
+down_threshold(back_camera_matrix, irrelevant, 2.0).
 down_threshold(cpu_n_cores, many, 8.0).
 down_threshold(cpu_n_cores, medium_amount, 4.0).
 down_threshold(cpu_n_cores, irrelevant, 2.0).

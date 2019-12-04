@@ -11,7 +11,7 @@ from typing import Optional
 from typing import Tuple
 
 from assistant.translator.features import BatteryCapacity, CPUFrequency, Storage, FrontCameraMatrix, DisplaySize, \
-    CPUNCores, DisplayWidth, DisplayHeight, Price
+    CPUNCores, DisplayWidth, DisplayHeight, Price, BackCameraMatrix
 
 __all__ = ["translate_file"]
 
@@ -47,6 +47,7 @@ class AggregatedRulesGenerator:
         self._cpu_frequencies: List[int] = list()
         self._storages: List[int] = list()
         self._front_cameras: List[float] = list()
+        self._back_cameras: List[float] = list()
         self._display_diagonals: List[float] = list()
         self._cpu_n_cores: List[int] = list()
         self._display_heights: List[int] = list()
@@ -61,6 +62,7 @@ class AggregatedRulesGenerator:
         self._try_add(row["cpu_frequency"], int, self._cpu_frequencies)
         self._try_add(row["storage"], int, self._storages)
         self._try_add(row["front_camera_matrix"], float, self._front_cameras) #tutaj musi zwracac nie float ale cos co bedzie zmieniac liste  na liste float (mozna uzytc tego parse_value)
+        self._try_add(row["back_camera_matrix"], float, self._back_cameras)
         self._try_add(row["display_diagonal"], float, self._display_diagonals)
         self._try_add(row["cpu_n_cores"], int, self._cpu_n_cores)
         self._try_add(row["display_height"], int, self._display_heights)
@@ -74,6 +76,13 @@ class AggregatedRulesGenerator:
             yield self._DOWN_THRESHOLD_TEMPLATE.format(
                 name="front_camera_matrix",
                 key=front_camera_matrix.value,
+                value=threshold,
+            )
+
+        for back_camera_matrix, threshold in self._back_camera_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="back_camera_matrix",
+                key=back_camera_matrix.value,
                 value=threshold,
             )
 
@@ -158,6 +167,16 @@ class AggregatedRulesGenerator:
             FrontCameraMatrix.GOOD: np.percentile(self._front_cameras,50),
             FrontCameraMatrix.EXCELLENT: np.percentile(self._front_cameras, 75),
             FrontCameraMatrix.IRRELEVANT: np.percentile(self._front_cameras, 25),
+        }
+
+    @property
+    def _back_camera_thresholds(
+            self,
+    ) -> Dict[BackCameraMatrix, float]:
+        return {
+            BackCameraMatrix.GOOD: np.percentile(self._back_cameras, 50),
+            BackCameraMatrix.EXCELLENT: np.percentile(self._back_cameras, 75),
+            BackCameraMatrix.IRRELEVANT: np.percentile(self._back_cameras, 25),
         }
 
     @property

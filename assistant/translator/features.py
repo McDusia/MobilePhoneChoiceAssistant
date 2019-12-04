@@ -1,7 +1,5 @@
 from enum import Enum
 
-# class DisplayWidth(Enum):
-
 
 class BatteryCapacity(Enum):
     LARGE = "large"
