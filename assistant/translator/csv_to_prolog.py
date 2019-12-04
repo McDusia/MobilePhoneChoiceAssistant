@@ -1,6 +1,6 @@
 import ast
 import csv
-import statistics as stats
+import numpy as np
 import string
 from typing import Any
 from typing import Callable
@@ -154,106 +154,88 @@ class AggregatedRulesGenerator:
     def _front_camera_thresholds(
             self,
     ) -> Dict[FrontCameraMatrix, float]:
-        mean = stats.mean(self._front_cameras)
-        stdev = stats.stdev(self._front_cameras)
         return {
-            FrontCameraMatrix.GOOD: mean + stdev,
-            FrontCameraMatrix.EXCELLENT: mean + 2 * stdev,
-            FrontCameraMatrix.IRRELEVANT: mean,
+            FrontCameraMatrix.GOOD: np.percentile(self._front_cameras,50),
+            FrontCameraMatrix.EXCELLENT: np.percentile(self._front_cameras, 75),
+            FrontCameraMatrix.IRRELEVANT: np.percentile(self._front_cameras, 25),
         }
 
     @property
     def _battery_thresholds(
             self,
     ) -> Dict[BatteryCapacity, int]:
-        mean_bc = stats.mean(self._battery_capacities)
-        stdev_bc = stats.stdev(self._battery_capacities)
         return {
-            BatteryCapacity.LARGE: mean_bc + 2 * stdev_bc,
-            BatteryCapacity.BIG: mean_bc + stdev_bc,
-            BatteryCapacity.OK: mean_bc,
+            BatteryCapacity.LARGE: np.percentile(self._battery_capacities, 75),
+            BatteryCapacity.BIG: np.percentile(self._battery_capacities, 50),
+            BatteryCapacity.OK: np.percentile(self._battery_capacities, 25),
         }
 
     @property
     def _display_diagonals_thresholds(
             self,
     ) -> Dict[DisplaySize, float]:
-        mean = stats.mean(self._display_diagonals)
-        stdev = stats.stdev(self._display_diagonals)
         return {
-            DisplaySize.BIG: mean + 2 * stdev,
-            DisplaySize.MEDIUM: mean + stdev,
-            DisplaySize.SMALL: mean,
+            DisplaySize.BIG: np.percentile(self._display_diagonals, 75),
+            DisplaySize.MEDIUM: np.percentile(self._display_diagonals, 50),
+            DisplaySize.SMALL: np.percentile(self._display_diagonals, 25),
         }
 
     @property
     def _display_height_thresholds(
             self,
     ) -> Dict[DisplayHeight, int]:
-        mean = stats.mean(self._display_heights)
-        stdev = stats.stdev(self._display_diagonals)
         return {
-            DisplayHeight.BIG: mean + 2 * stdev,
-            DisplayHeight.MEDIUM: mean + stdev,
-            DisplayHeight.SMALL: mean,
+            DisplayHeight.BIG: np.percentile(self._display_heights, 75),
+            DisplayHeight.MEDIUM: np.percentile(self._display_heights, 50),
+            DisplayHeight.SMALL: np.percentile(self._display_heights, 25),
         }
 
     @property
     def _display_width_thresholds(
             self,
     ) -> Dict[DisplayWidth, int]:
-        mean = stats.mean(self._display_widths)
-        stdev = stats.stdev(self._display_widths)
         return {
-            DisplayWidth.BIG: mean + 2 * stdev,
-            DisplayWidth.MEDIUM: mean + stdev,
-            DisplayWidth.SMALL: mean,
+            DisplayWidth.BIG: np.percentile(self._display_widths, 75),
+            DisplayWidth.MEDIUM: np.percentile(self._display_widths, 50),
+            DisplayWidth.SMALL: np.percentile(self._display_widths, 25),
         }
 
     @property
     def _cpu_n_cores_thresholds(
             self,
     ) -> Dict[CPUNCores, float]:
-        mean = stats.mean(self._cpu_n_cores)
-        stdev = stats.stdev(self._cpu_n_cores)
         return {
-            CPUNCores.MANY: mean + 2 * stdev,
-            CPUNCores.MEDIUM_AMOUNT: mean + stdev,
-            CPUNCores.IRRELEVANT: mean,
+            CPUNCores.MANY: np.percentile(self._cpu_n_cores, 75),
+            CPUNCores.MEDIUM_AMOUNT: np.percentile(self._cpu_n_cores, 50),
+            CPUNCores.IRRELEVANT: np.percentile(self._cpu_n_cores, 25),
         }
 
     @property
     def _storage_thresholds(
             self,
     ) -> Dict[Storage, int]:
-        mean_s = stats.mean(self._storages)
-        stdev_s = stats.stdev(self._storages)
         return {
-            Storage.HIGH: mean_s + 2 * stdev_s,
-            Storage.MEDIUM: mean_s + stdev_s,
-            Storage.LOW: mean_s,
+            Storage.HIGH: np.percentile(self._storages, 75),
+            Storage.MEDIUM: np.percentile(self._storages, 50),
+            Storage.LOW: np.percentile(self._storages, 25),
         }
 
     @property
     def _cpu_frequency_thresholds(
             self,
     ) -> Dict[CPUFrequency, int]:
-        mean_freq = stats.mean(self._cpu_frequencies)
-        stdev_freq = stats.stdev(self._cpu_frequencies)
         return {
-            CPUFrequency.LOW: mean_freq,
-            CPUFrequency.HIGH: mean_freq + stdev_freq
+            CPUFrequency.LOW: np.percentile(self._cpu_frequencies, 75),
+            CPUFrequency.HIGH: np.percentile(self._cpu_frequencies, 25)
         }
 
     @property
     def _prices_thresholds(
             self,
     ) -> Dict[Price, int]:
-        mean_freq = stats.mean(self._prices)
-        stdev_freq = stats.stdev(self._prices)
         return {
-            Price.CHEAP: mean_freq,
-            Price.HIGH: mean_freq + stdev_freq
+            Price.CHEAP: np.percentile(self._prices, 75),
+            Price.HIGH: np.percentile(self._prices, 25)
         }
 
     @staticmethod
