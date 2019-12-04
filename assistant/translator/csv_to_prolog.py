@@ -121,43 +121,19 @@ class AggregatedRulesGenerator:
                 value=threshold,
             )
 
-        cpu_thresholds = self._cpu_frequency_thresholds
-        yield self._DOWN_THRESHOLD_TEMPLATE.format(
-            name="cpu_frequency",
-            key=CPUFrequency.HIGH.value,
-            value=cpu_thresholds[CPUFrequency.HIGH],
-        )
-        yield self._DOWN_THRESHOLD_TEMPLATE.format(
-            name="cpu_frequency",
-            key=CPUFrequency.LOW.value,
-            value=cpu_thresholds[CPUFrequency.LOW],
-        )
-
-        for display_diagonal, threshold in self._display_diagonals_thresholds.items():
+        for cpu_frequency, threshold in self._cpu_frequency_thresholds.items():
             yield self._DOWN_THRESHOLD_TEMPLATE.format(
-                name="display_diagonal",
-                key=display_diagonal.value,
+                name="cpu_frequency",
+                key=cpu_frequency.value,
                 value=threshold,
             )
 
-        storage_thresholds = self._storage_thresholds
-        yield self._DOWN_THRESHOLD_TEMPLATE.format(
-            name='storage',
-            key=Storage.LOW.value,
-            value=storage_thresholds[Storage.LOW],
-        )
-
-        yield self._DOWN_THRESHOLD_TEMPLATE.format(
-            name='storage',
-            key=Storage.HIGH.value,
-            value=storage_thresholds[Storage.HIGH],
-        )
-
-        yield self._DOWN_THRESHOLD_TEMPLATE.format(
-            name='storage',
-            key=Storage.MEDIUM.value,
-            value=storage_thresholds[Storage.MEDIUM],
-        )
+        for storage, threshold in self._storage_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="storage",
+                key=storage.value,
+                value=threshold,
+            )
 
     @property
     def _front_camera_thresholds(
@@ -265,20 +241,13 @@ class AggregatedRulesGenerator:
     ):
         if maybe_value:
             try:
-                values_list.append(mapping(maybe_value))
-            except:
-                pass
-
-    @staticmethod
-    def _try_add_multiple_values(
-            maybe_value: Optional[Any],
-            mapping: Callable[[Any], List[Any]],
-            values_list: List[Any],
-    ):
-        if maybe_value:
-            try:
-                new_items = mapping(maybe_value)
-                values_list.extend(new_items)
+                if maybe_value.startswith("[") and maybe_value.endswith("]"):
+                    maybe_value = maybe_value[1:-1]
+                    maybe_value_items = maybe_value.split(",")
+                    for i in maybe_value_items:
+                        values_list.append(mapping(i))
+                else:
+                    values_list.append(mapping(maybe_value))
             except:
                 pass
 
