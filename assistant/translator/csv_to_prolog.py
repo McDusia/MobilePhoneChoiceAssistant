@@ -11,7 +11,7 @@ from typing import Optional
 from typing import Tuple
 
 from assistant.translator.features import BatteryCapacity, CPUFrequency, Storage, FrontCameraMatrix, DisplayDiagonal, \
-    CPUNCores, DisplayWidth, DisplayHeight, Price, BackCameraMatrix
+    CPUNCores, DisplayWidth, DisplayHeight, Price, BackCameraMatrix, NumberOfColors
 
 __all__ = ["translate_file"]
 
@@ -53,6 +53,7 @@ class AggregatedRulesGenerator:
         self._display_heights: List[int] = list()
         self._display_widths: List[int] = list()
         self._prices: List[float] = list()
+        self._number_of_colors: List[int] = list()
 
     def aggregate(
             self,
@@ -68,6 +69,8 @@ class AggregatedRulesGenerator:
         self._try_add(row["display_height"], int, self._display_heights)
         self._try_add(row["display_width"], int, self._display_widths)
         self._try_add(row["price"], float, self._prices)
+        self._try_add(row["display_number_of_colors"], int, self._number_of_colors)
+
 
     @property
     def aggregated_rules(self) -> Generator[str, None, None]:
@@ -114,6 +117,13 @@ class AggregatedRulesGenerator:
                 value=threshold,
             )
 
+        for display_diagonal, threshold in self._display_diagonals_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="display_diagonal",
+                key=display_diagonal.value,
+                value=threshold,
+            )
+
         for price, threshold in self._prices_thresholds.items():
             yield self._DOWN_THRESHOLD_TEMPLATE.format(
                 name="price",
@@ -135,6 +145,13 @@ class AggregatedRulesGenerator:
                 value=threshold,
             )
 
+        for display_number_of_colors, threshold in self._number_of_colors_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="display_number_of_colors",
+                key=display_number_of_colors.value,
+                value=threshold,
+            )
+
     @property
     def _front_camera_thresholds(
             self,
@@ -142,7 +159,7 @@ class AggregatedRulesGenerator:
         return {
             FrontCameraMatrix.GOOD: np.percentile(self._front_cameras,50),
             FrontCameraMatrix.EXCELLENT: np.percentile(self._front_cameras, 75),
-            FrontCameraMatrix.IRRELEVANT: np.percentile(self._front_cameras, 25),
+            FrontCameraMatrix.IRRELEVANT: min(self._front_cameras),
         }
 
     @property
@@ -202,7 +219,7 @@ class AggregatedRulesGenerator:
         return {
             CPUNCores.MANY: np.percentile(self._cpu_n_cores, 75),
             CPUNCores.MEDIUM_AMOUNT: np.percentile(self._cpu_n_cores, 50),
-            CPUNCores.IRRELEVANT: np.percentile(self._cpu_n_cores, 25),
+            CPUNCores.IRRELEVANT: min(self._cpu_n_cores),
         }
 
     @property
@@ -220,8 +237,8 @@ class AggregatedRulesGenerator:
             self,
     ) -> Dict[CPUFrequency, int]:
         return {
-            CPUFrequency.LOW: np.percentile(self._cpu_frequencies, 75),
-            CPUFrequency.HIGH: np.percentile(self._cpu_frequencies, 25)
+            CPUFrequency.LOW: np.percentile(self._cpu_frequencies, 25),
+            CPUFrequency.HIGH: np.percentile(self._cpu_frequencies, 75)
         }
 
     @property
@@ -229,8 +246,17 @@ class AggregatedRulesGenerator:
             self,
     ) -> Dict[Price, int]:
         return {
-            Price.CHEAP: np.percentile(self._prices, 75),
-            Price.HIGH: np.percentile(self._prices, 25)
+            Price.CHEAP: np.percentile(self._prices, 25),
+            Price.MEDIUM: np.percentile(self._prices, 50)
+        }
+
+    @property
+    def _number_of_colors_thresholds(
+            self,
+    ) -> Dict[NumberOfColors, int]:
+        return {
+            NumberOfColors.MEDIUM_AMOUNT: np.percentile(self._prices, 50),
+            NumberOfColors.MANY: np.percentile(self._prices, 75)
         }
 
     @staticmethod

@@ -18,6 +18,7 @@ class CPUNCores(Enum):
     IRRELEVANT = "irrelevant"
 
 
+
 class Memory(Enum):
     HIGH = "high"
     MEDIUM = "medium"
@@ -128,10 +129,10 @@ class FrontCameraMatrix(Enum):
 
 
 class Price(Enum):
-    HIGH = "high"
+    # HIGH = "high"
     MEDIUM = "medium"
     CHEAP = "cheap"
-    VERY_CHEAP = "very_cheap"
+    # VERY_CHEAP = "very_cheap"
 
 
 class PhoneForBusiness(Enum):

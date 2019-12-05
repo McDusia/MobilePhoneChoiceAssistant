@@ -43,7 +43,8 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
 
     def battery_life(self, battery_life: BatteryLife):
         rule_key = "battery_life"
-        self._require(rule_key, battery_life.name.lower())
+        if not BatteryLife == BatteryLife.IRRELEVANT:
+            self._require(rule_key, battery_life.name.lower())
 
     def cpu_frequency(self, cpu_frequency: CPUFrequency):
         rule_key = "cpu_frequency"
@@ -58,7 +59,7 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         self._require(rule_key,RequiredFeature_String)
 
     def water_resistant(self):
-        rule_key = "touch_screen"
+        rule_key = "water_resistant"
         self._require(rule_key, RequiredFeature_String)
 
     def dual_sim(self):
@@ -71,7 +72,10 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
 
     def back_camera_matrix(self, back_camera_matrix: BackCameraMatrix):
         rule_key = "back_camera_matrix"
-        self._require(rule_key, back_camera_matrix.name.lower())
+        if back_camera_matrix.name.lower() == "irrelevant":
+            self._prolog.retract("user_requirement(A,B)")
+        else:
+            self._require(rule_key, back_camera_matrix.name.lower())
 
     def front_camera_matrix(self, front_camera_matrix: FrontCameraMatrix):
         rule_key = "front_camera_matrix"
