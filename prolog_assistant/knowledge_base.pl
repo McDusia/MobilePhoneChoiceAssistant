@@ -4923,8 +4923,8 @@ down_threshold(front_camera_matrix, irrelevant, 0.3).
 down_threshold(back_camera_matrix, good, 5.0).
 down_threshold(back_camera_matrix, excellent, 8.0).
 down_threshold(back_camera_matrix, irrelevant, 0.3).
-down_threshold(cpu_n_cores, many, 8.0).
-down_threshold(cpu_n_cores, medium_amount, 4.0).
+down_threshold(cpu_n_cores, many, 4.0).
+down_threshold(cpu_n_cores, medium_amount, 2.0).
 down_threshold(cpu_n_cores, irrelevant, 1).
 down_threshold(battery_capacity, large, 2200.0).
 down_threshold(battery_capacity, big, 1500.0).

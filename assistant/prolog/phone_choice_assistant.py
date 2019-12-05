@@ -43,8 +43,8 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
 
     def battery_life(self, battery_life: BatteryLife):
         rule_key = "battery_life"
-        if not BatteryLife == BatteryLife.IRRELEVANT:
-            self._require(rule_key, battery_life.name.lower())
+        # if not BatteryLife == BatteryLife.IRRELEVANT:
+        self._require(rule_key, battery_life.name.lower())
 
     def cpu_frequency(self, cpu_frequency: CPUFrequency):
         rule_key = "cpu_frequency"
