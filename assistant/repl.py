@@ -173,10 +173,10 @@ Either good or irrelevant."""
             No arguments required """
             self._phone_choice_assistant.phone_to_play_games()
 
-    def do_phone_to_make_photos(self, arg: str):
-            """Sets requirement: phone to make photos
+    def do_phone_to_take_photos(self, arg: str):
+            """Sets requirement: phone to take photos
             No arguments required """
-            self._phone_choice_assistant.phone_to_make_photos()
+            self._phone_choice_assistant.phone_to_take_photos()
 
     def _print(self, *args, **kwargs):
         kwargs["file"] = self.stdout

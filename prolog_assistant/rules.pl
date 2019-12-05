@@ -6,7 +6,7 @@ meets_down_threshold(Model, Feature) :-
     required(Feature, RequiredLevelDesc),
     down_threshold(Feature, RequiredLevelDesc, RequiredLevelValue),
     has(Model, Feature, ModelValue),
-    (ModelValue > RequiredLevelValue).
+    (ModelValue >= RequiredLevelValue).
 
 
 meets_feature_requirements(Model, Feature) :- meets_down_threshold(Model, Feature).
@@ -21,6 +21,7 @@ meets_feature_requirements(Model, Feature) :- not(has(Model, Feature, _)), not(r
  */
 required(battery_capacity, ok) :- user_requirement(battery_life, good).
 required(battery_capacity, large) :- user_requirement(battery_life, excellent).
+
 required(cpu_frequency, low) :- user_requirement(cpu_frequency, low).
 required(cpu_frequency, high) :- user_requirement(cpu_frequency, high).
 required(touch_screen, true) :- user_requirement(touch_screen, yes).

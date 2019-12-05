@@ -58,7 +58,7 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         self._require(rule_key,RequiredFeature_String)
 
     def water_resistant(self):
-        rule_key = "touch_screen"
+        rule_key = "water_resistant"
         self._require(rule_key, RequiredFeature_String)
 
     def dual_sim(self):
@@ -105,8 +105,8 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         rule_key = "phone_to_play_games"
         self._require(rule_key, RequiredFeature_String)
 
-    def phone_to_make_photos(self):
-        rule_key = "phone_to_make_photos"
+    def phone_to_take_photos(self):
+        rule_key = "phone_to_take_photos"
         self._require(rule_key, RequiredFeature_String)
 
     def phone_for_trips(self):
@@ -118,11 +118,13 @@ class PrologPhoneChoiceAssistant(PhoneChoiceAssistant):
         if previous_rule:
             self._prolog.retract(previous_rule)
 
+        if value == "irrelevant":
+            return
+
         new_rule = PrologPhoneChoiceAssistant._REQUIRE_TEMPLATE.format(
             rule_key=rule_key,
             value=value,
         )
-        print(new_rule)
         self._prolog.asserta(new_rule)
         self._loaded_rules[rule_key] = new_rule
 

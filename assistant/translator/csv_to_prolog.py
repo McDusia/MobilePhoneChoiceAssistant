@@ -1,6 +1,6 @@
 import ast
 import csv
-import statistics as stats
+import numpy as np
 import string
 from typing import Any
 from typing import Callable
@@ -10,7 +10,8 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
-from assistant.translator.features import BatteryCapacity, CPUFrequency
+from assistant.translator.features import BatteryCapacity, CPUFrequency, Storage, FrontCameraMatrix, DisplayDiagonal, \
+    CPUNCores, DisplayWidth, DisplayHeight, Price, BackCameraMatrix, NumberOfColors
 
 __all__ = ["translate_file"]
 
@@ -39,12 +40,20 @@ PhoneSpecRow = Dict[str, str]
 
 class AggregatedRulesGenerator:
     _RULE_TEMPLATE = string.Template("$threshold({name}, {key}, {value}).\n")
-    _UP_THRESHOLD_TEMPLATE = _RULE_TEMPLATE.substitute(threshold="up_threshold")
     _DOWN_THRESHOLD_TEMPLATE = _RULE_TEMPLATE.substitute(threshold="down_threshold")
 
     def __init__(self) -> None:
         self._battery_capacities: List[int] = list()
         self._cpu_frequencies: List[int] = list()
+        self._storages: List[int] = list()
+        self._front_cameras: List[float] = list()
+        self._back_cameras: List[float] = list()
+        self._display_diagonals: List[float] = list()
+        self._cpu_n_cores: List[int] = list()
+        self._display_heights: List[int] = list()
+        self._display_widths: List[int] = list()
+        self._prices: List[float] = list()
+        self._number_of_colors: List[int] = list()
 
     def aggregate(
             self,
@@ -52,48 +61,202 @@ class AggregatedRulesGenerator:
     ):
         self._try_add(row["battery_capacity"], int, self._battery_capacities)
         self._try_add(row["cpu_frequency"], int, self._cpu_frequencies)
+        self._try_add(row["storage"], int, self._storages)
+        self._try_add(row["front_camera_matrix"], float, self._front_cameras) #tutaj musi zwracac nie float ale cos co bedzie zmieniac liste  na liste float (mozna uzytc tego parse_value)
+        self._try_add(row["back_camera_matrix"], float, self._back_cameras)
+        self._try_add(row["display_diagonal"], float, self._display_diagonals)
+        self._try_add(row["cpu_n_cores"], int, self._cpu_n_cores)
+        self._try_add(row["display_height"], int, self._display_heights)
+        self._try_add(row["display_width"], int, self._display_widths)
+        self._try_add(row["price"], float, self._prices)
+        self._try_add(row["display_number_of_colors"], int, self._number_of_colors)
+
 
     @property
     def aggregated_rules(self) -> Generator[str, None, None]:
+
+        for front_camera_matrix, threshold in self._front_camera_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="front_camera_matrix",
+                key=front_camera_matrix.value,
+                value=threshold,
+            )
+
+        for back_camera_matrix, threshold in self._back_camera_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="back_camera_matrix",
+                key=back_camera_matrix.value,
+                value=threshold,
+            )
+
+        for cpu_n_cores, threshold in self._cpu_n_cores_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="cpu_n_cores",
+                key=cpu_n_cores.value,
+                value=threshold,
+            )
+
         for battery_capacity, threshold in self._battery_thresholds.items():
-            yield self._UP_THRESHOLD_TEMPLATE.format(
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
                 name="battery_capacity",
                 key=battery_capacity.value,
                 value=threshold,
             )
-        cpu_thresholds = self._cpu_frequency_thresholds
-        yield self._UP_THRESHOLD_TEMPLATE.format(
-            name="cpu_frequency",
-            key=CPUFrequency.HIGH.value,
-            value=cpu_thresholds[CPUFrequency.HIGH],
-        )
-        yield self._DOWN_THRESHOLD_TEMPLATE.format(
-            name="cpu_frequency",
-            key=CPUFrequency.LOW.value,
-            value=cpu_thresholds[CPUFrequency.LOW],
-        )
+
+        for display_height, threshold in self._display_height_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="display_height",
+                key=display_height.value,
+                value=threshold,
+            )
+
+        for display_width, threshold in self._display_width_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="display_width",
+                key=display_width.value,
+                value=threshold,
+            )
+
+        for display_diagonal, threshold in self._display_diagonals_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="display_diagonal",
+                key=display_diagonal.value,
+                value=threshold,
+            )
+
+        for price, threshold in self._prices_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="price",
+                key=price.value,
+                value=threshold,
+            )
+
+        for cpu_frequency, threshold in self._cpu_frequency_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="cpu_frequency",
+                key=cpu_frequency.value,
+                value=threshold,
+            )
+
+        for storage, threshold in self._storage_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="storage",
+                key=storage.value,
+                value=threshold,
+            )
+
+        for display_number_of_colors, threshold in self._number_of_colors_thresholds.items():
+            yield self._DOWN_THRESHOLD_TEMPLATE.format(
+                name="display_number_of_colors",
+                key=display_number_of_colors.value,
+                value=threshold,
+            )
+
+    @property
+    def _front_camera_thresholds(
+            self,
+    ) -> Dict[FrontCameraMatrix, float]:
+        return {
+            FrontCameraMatrix.GOOD: np.percentile(self._front_cameras,50),
+            FrontCameraMatrix.EXCELLENT: np.percentile(self._front_cameras, 75),
+            FrontCameraMatrix.IRRELEVANT: min(self._front_cameras),
+        }
+
+    @property
+    def _back_camera_thresholds(
+            self,
+    ) -> Dict[BackCameraMatrix, float]:
+        return {
+            BackCameraMatrix.GOOD: np.percentile(self._back_cameras, 50),
+            BackCameraMatrix.EXCELLENT: np.percentile(self._back_cameras, 75),
+            BackCameraMatrix.IRRELEVANT: min(self._back_cameras),
+        }
 
     @property
     def _battery_thresholds(
             self,
     ) -> Dict[BatteryCapacity, int]:
-        mean_bc = stats.mean(self._battery_capacities)
-        stdev_bc = stats.stdev(self._battery_capacities)
         return {
-            BatteryCapacity.LARGE: mean_bc + 2 * stdev_bc,
-            BatteryCapacity.BIG: mean_bc + stdev_bc,
-            BatteryCapacity.OK: mean_bc,
+            BatteryCapacity.LARGE: np.percentile(self._battery_capacities, 75),
+            BatteryCapacity.BIG: np.percentile(self._battery_capacities, 50),
+            BatteryCapacity.OK: np.percentile(self._battery_capacities, 25),
+        }
+
+    @property
+    def _display_diagonals_thresholds(
+            self,
+    ) -> Dict[DisplayDiagonal, float]:
+        return {
+            DisplayDiagonal.BIG: np.percentile(self._display_diagonals, 75),
+            DisplayDiagonal.MEDIUM: np.percentile(self._display_diagonals, 50),
+            DisplayDiagonal.SMALL: np.percentile(self._display_diagonals, 25),
+        }
+
+    @property
+    def _display_height_thresholds(
+            self,
+    ) -> Dict[DisplayHeight, int]:
+        return {
+            DisplayHeight.BIG: np.percentile(self._display_heights, 75),
+            DisplayHeight.MEDIUM: np.percentile(self._display_heights, 50),
+            DisplayHeight.SMALL: np.percentile(self._display_heights, 25),
+        }
+
+    @property
+    def _display_width_thresholds(
+            self,
+    ) -> Dict[DisplayWidth, int]:
+        return {
+            DisplayWidth.BIG: np.percentile(self._display_widths, 75),
+            DisplayWidth.MEDIUM: np.percentile(self._display_widths, 50),
+            DisplayWidth.SMALL: np.percentile(self._display_widths, 25),
+        }
+
+    @property
+    def _cpu_n_cores_thresholds(
+            self,
+    ) -> Dict[CPUNCores, float]:
+        return {
+            CPUNCores.MANY: np.percentile(self._cpu_n_cores, 75),
+            CPUNCores.MEDIUM_AMOUNT: np.percentile(self._cpu_n_cores, 50),
+            CPUNCores.IRRELEVANT: min(self._cpu_n_cores),
+        }
+
+    @property
+    def _storage_thresholds(
+            self,
+    ) -> Dict[Storage, int]:
+        return {
+            Storage.HIGH: np.percentile(self._storages, 75),
+            Storage.MEDIUM: np.percentile(self._storages, 50),
+            Storage.LOW: np.percentile(self._storages, 25),
         }
 
     @property
     def _cpu_frequency_thresholds(
             self,
     ) -> Dict[CPUFrequency, int]:
-        mean_freq = stats.mean(self._cpu_frequencies)
-        stdev_freq = stats.stdev(self._cpu_frequencies)
         return {
-            CPUFrequency.LOW: mean_freq,
-            CPUFrequency.HIGH: mean_freq + stdev_freq
+            CPUFrequency.LOW: np.percentile(self._cpu_frequencies, 25),
+            CPUFrequency.HIGH: np.percentile(self._cpu_frequencies, 75)
+        }
+
+    @property
+    def _prices_thresholds(
+            self,
+    ) -> Dict[Price, int]:
+        return {
+            Price.CHEAP: np.percentile(self._prices, 25),
+            Price.MEDIUM: np.percentile(self._prices, 50)
+        }
+
+    @property
+    def _number_of_colors_thresholds(
+            self,
+    ) -> Dict[NumberOfColors, int]:
+        return {
+            NumberOfColors.MEDIUM_AMOUNT: np.percentile(self._prices, 50),
+            NumberOfColors.MANY: np.percentile(self._prices, 75)
         }
 
     @staticmethod
@@ -104,7 +267,13 @@ class AggregatedRulesGenerator:
     ):
         if maybe_value:
             try:
-                values_list.append(mapping(maybe_value))
+                if maybe_value.startswith("[") and maybe_value.endswith("]"):
+                    maybe_value = maybe_value[1:-1]
+                    maybe_value_items = maybe_value.split(",")
+                    for i in maybe_value_items:
+                        values_list.append(mapping(i))
+                else:
+                    values_list.append(mapping(maybe_value))
             except:
                 pass
 
@@ -160,7 +329,7 @@ class RulesTranslator:
             row: PhoneSpecRow,
     ) -> str:
         facts = RulesTranslator._facts(row)
-        facts_str = ",\n".join(f"{fact}"
+        facts_str = ".\n".join(f"{fact}"
                                for fact in facts)
 
         self._aggregated_rules_generator.aggregate(row)
