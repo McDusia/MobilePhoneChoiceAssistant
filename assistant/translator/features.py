@@ -77,20 +77,20 @@ class USBC(Enum):
     NO = "no"
 
 
-class DisplaySize(Enum):
-    BIG = "long"
+class DisplayDiagonal(Enum):
+    BIG = "great"
     MEDIUM = "medium"
     SMALL = "small"
 
 
 class DisplayWidth(Enum):
-    BIG = "long"
+    BIG = "great"
     MEDIUM = "medium"
     SMALL = "small"
 
 
 class DisplayHeight(Enum):
-    BIG = "long"
+    BIG = "great"
     MEDIUM = "medium"
     SMALL = "small"
 

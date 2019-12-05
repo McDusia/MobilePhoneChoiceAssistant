@@ -10,7 +10,7 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
-from assistant.translator.features import BatteryCapacity, CPUFrequency, Storage, FrontCameraMatrix, DisplaySize, \
+from assistant.translator.features import BatteryCapacity, CPUFrequency, Storage, FrontCameraMatrix, DisplayDiagonal, \
     CPUNCores, DisplayWidth, DisplayHeight, Price, BackCameraMatrix
 
 __all__ = ["translate_file"]
@@ -152,7 +152,7 @@ class AggregatedRulesGenerator:
         return {
             BackCameraMatrix.GOOD: np.percentile(self._back_cameras, 50),
             BackCameraMatrix.EXCELLENT: np.percentile(self._back_cameras, 75),
-            BackCameraMatrix.IRRELEVANT: np.percentile(self._back_cameras, 25),
+            BackCameraMatrix.IRRELEVANT: min(self._back_cameras),
         }
 
     @property
@@ -168,11 +168,11 @@ class AggregatedRulesGenerator:
     @property
     def _display_diagonals_thresholds(
             self,
-    ) -> Dict[DisplaySize, float]:
+    ) -> Dict[DisplayDiagonal, float]:
         return {
-            DisplaySize.BIG: np.percentile(self._display_diagonals, 75),
-            DisplaySize.MEDIUM: np.percentile(self._display_diagonals, 50),
-            DisplaySize.SMALL: np.percentile(self._display_diagonals, 25),
+            DisplayDiagonal.BIG: np.percentile(self._display_diagonals, 75),
+            DisplayDiagonal.MEDIUM: np.percentile(self._display_diagonals, 50),
+            DisplayDiagonal.SMALL: np.percentile(self._display_diagonals, 25),
         }
 
     @property
