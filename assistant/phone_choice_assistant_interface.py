@@ -81,5 +81,5 @@ class PhoneChoiceAssistant(ABC):
         ...
 
     @abstractmethod
-    def phone_to_make_photos(self):
+    def phone_to_take_photos(self):
         ...

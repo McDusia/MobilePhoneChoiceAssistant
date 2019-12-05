@@ -6,7 +6,7 @@ meets_down_threshold(Model, Feature) :-
     required(Feature, RequiredLevelDesc),
     down_threshold(Feature, RequiredLevelDesc, RequiredLevelValue),
     has(Model, Feature, ModelValue),
-    (ModelValue > RequiredLevelValue).
+    (ModelValue >= RequiredLevelValue).
 
 
 meets_feature_requirements(Model, Feature) :- meets_down_threshold(Model, Feature).

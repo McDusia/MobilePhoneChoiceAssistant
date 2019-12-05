@@ -217,8 +217,8 @@ class AggregatedRulesGenerator:
             self,
     ) -> Dict[CPUNCores, float]:
         return {
-            CPUNCores.MANY: np.percentile(self._cpu_n_cores, 50),
-            CPUNCores.MEDIUM_AMOUNT: np.percentile(self._cpu_n_cores, 25),
+            CPUNCores.MANY: np.percentile(self._cpu_n_cores, 75),
+            CPUNCores.MEDIUM_AMOUNT: np.percentile(self._cpu_n_cores, 50),
             CPUNCores.IRRELEVANT: min(self._cpu_n_cores),
         }
 
